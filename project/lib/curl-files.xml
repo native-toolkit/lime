@@ -1,5 +1,7 @@
 <xml>
-	<include name="${HXCPP}/src/hx/libs/ssl/Build.xml" />
+	<include name="${HXCPP}/project/thirdparty/mbedtls_files.xml" noerror="true" if="static_link"/>
+	<set name="HAS_HXCPP_MBEDTLS_FLAGS" value="1" if="MBEDTLS_DIR" />
+	<include name="${HXCPP}/src/hx/libs/ssl/Build.xml" unless="MBEDTLS_DIR"/>
 
 	<files id="native-toolkit-curl-depends"  >
 		<depend name="${NATIVE_TOOLKIT_PATH}/curl/include/curl/curl.h" />
@@ -28,10 +30,16 @@
 		<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/mbedtls/include" if="NATIVE_TOOLKIT_HAVE_MBEDTLS"  unless="static_link"/>
 		<section if="static_link">
 
-			<compilerflag value="-I${MBEDTLS_DIR}/include" />
-			<compilerflag value="-I${HXCPP}/src/hx/libs/ssl" />
-			<compilerflag value="-I${this_dir}/custom/mbedtls_hxcpp" />
-			<compilerflag value="-DMBEDTLS_USER_CONFIG_FILE=&lt;mbedtls_config.h&gt;" />
+			<include name="${HXCPP}/project/thirdparty/mbedtls_flags.xml" if="HAS_HXCPP_MBEDTLS_FLAGS" />
+
+			<section unless="HAS_HXCPP_MBEDTLS_FLAGS">
+
+				<compilerflag value="-I${MBEDTLS_DIR}/include" />
+				<compilerflag value="-I${HXCPP}/src/hx/libs/ssl" />
+				<compilerflag value="-I${this_dir}/custom/mbedtls_hxcpp" />
+				<compilerflag value="-DMBEDTLS_USER_CONFIG_FILE=&lt;mbedtls_config.h&gt;" />
+
+			</section>
 
 		</section>
 
