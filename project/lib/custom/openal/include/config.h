@@ -8,7 +8,9 @@
 
 #elif defined(HX_WINDOWS)
 
-#ifdef HXCPP_M64
+#if defined(HXCPP_ARM64)
+#include "config-windows-arm64.h"
+#elif defined(HXCPP_M64)
 #include "config-windows-x86_64.h"
 #else
 #include "config-windows-x86.h"
@@ -16,8 +18,8 @@
 
 #elif defined(HX_LINUX)
 
-#ifdef HXCPP_ARM64
-#include "config-linux-arm64.h"
+#if defined(HXCPP_ARM64) || defined(HXCPP_ARMV7)
+#include "config-linux-arm.h"
 #else
 #include "config-linux-x86_64.h"
 #endif

@@ -143,11 +143,11 @@
 
             <compilerflag value="-DHAVE_LINUX_VERSION_H" />
             <compilerflag value="-D_REENTRANT" />
-            <compilerflag value="-mmmx" unless="HXCPP_ARM64" />
-            <compilerflag value="-msse" unless="HXCPP_ARM64" />
-            <compilerflag value="-msse2" unless="HXCPP_ARM64" />
-            <compilerflag value="-msse3" unless="HXCPP_ARM64" />
-            <compilerflag value="-mssse3" unless="HXCPP_ARM64" />
+            <compilerflag value="-mmmx" unless="HXCPP_ARMV7 || HXCPP_ARM64" />
+            <compilerflag value="-msse" unless="HXCPP_ARMV7 || HXCPP_ARM64" />
+            <compilerflag value="-msse2" unless="HXCPP_ARMV7 || HXCPP_ARM64" />
+            <compilerflag value="-msse3" unless="HXCPP_ARMV7 || HXCPP_ARM64" />
+            <compilerflag value="-mssse3" unless="HXCPP_ARMV7 || HXCPP_ARM64" />
 
             <set name="XINPUT2" value="${NATIVE_TOOLKIT_SDL_X11_XINPUT2}" />
             <compilerflag value="-DNATIVE_TOOLKIT_SDL_X11_XINPUT2=${XINPUT2}" if="XINPUT2" />
@@ -162,11 +162,11 @@
             <compilerflag value="-DTARGET_API_MAC_CARBON" />
             <compilerflag value="-DTARGET_API_MAC_OSX" />
             <compilerflag value="-D_THREAD_SAFE" />
-            <compilerflag value="-mmmx" unless="HXCPP_ARM64" />
-            <compilerflag value="-msse" unless="HXCPP_ARM64" />
-            <compilerflag value="-msse2" unless="HXCPP_ARM64" />
-            <compilerflag value="-msse3" unless="HXCPP_ARM64" />
-            <compilerflag value="-mssse3" unless="HXCPP_ARM64" />
+            <compilerflag value="-mmmx" unless="HXCPP_ARMV7 || HXCPP_ARM64" />
+            <compilerflag value="-msse" unless="HXCPP_ARMV7 || HXCPP_ARM64" />
+            <compilerflag value="-msse2" unless="HXCPP_ARMV7 || HXCPP_ARM64" />
+            <compilerflag value="-msse3" unless="HXCPP_ARMV7 || HXCPP_ARM64" />
+            <compilerflag value="-mssse3" unless="HXCPP_ARMV7 || HXCPP_ARM64" />
 
         </section>
 
