@@ -310,7 +310,7 @@
 /* #undef USE_VMX */
 
 /* use x86 MMX compiler intrinsics */
-#if ((defined(HX_WINDOWS) && !defined(HXCPP_ARM64)) || /*defined(HX_MACOS) ||*/ (defined(HX_LINUX) && !defined(RASPBERRYPI)) ) && !defined(HXCPP_M64) && !defined(HXCPP_ARMV7) !defined(HXCPP_ARM64)
+#if ((defined(HX_WINDOWS) && !defined(HXCPP_ARM64)) || /*defined(HX_MACOS) ||*/ (defined(HX_LINUX) && !defined(RASPBERRYPI)) ) && !defined(HXCPP_M64) && !defined(HXCPP_ARMV7) && !defined(HXCPP_ARM64)
 #define USE_X86_MMX 1
 #else
 /* #undef USE_X86_MMX */
