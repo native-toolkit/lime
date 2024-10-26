@@ -500,7 +500,7 @@
 
 			</section>
 
-			<section if="rpi">
+			<section if="linux HXCPP_ARMV7 || linux HXCPP_ARM64">
 				<lib name="-ldl" />
 				<lib name="-ldrm" />
 				<lib name="-lm" />
