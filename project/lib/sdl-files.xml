@@ -298,7 +298,7 @@
 
         </section>
 
-        <section if="LIBSDL_HIDAPI">
+        <section if="android || windows || mac">
 
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/hidapi/SDL_hidapi_gamecube.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/hidapi/SDL_hidapi_luna.c" />
