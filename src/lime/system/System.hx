@@ -402,8 +402,7 @@ class System
 			#elseif flash
 			Lib.getURL(new URLRequest(url), target);
 			#elseif android
-			var openURL = JNI.createStaticMethod("org/haxe/lime/GameActivity", "openURL", "(Ljava/lang/String;Ljava/lang/String;)V");
-			openURL(url, target);
+			JNI.createStaticMethod("org/libsdl/app/SDLActivity", "openURL", "(Ljava/lang/String;)I")(url);
 			#elseif (lime_cffi && !macro)
 			NativeCFFI.lime_system_open_url(url, target);
 			#end
