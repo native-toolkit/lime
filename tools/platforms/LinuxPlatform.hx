@@ -488,7 +488,7 @@ class LinuxPlatform extends PlatformTarget
 				commands.push(["-Dlinux", "-DHXCPP_M64"]);
 			}
 
-			if (!targetFlags.exists("64") && !targetFlags.exists("x86_64") && (command == "rebuild" && (System.hostArchitecture == X86 || System.hostArchitecture == X64))
+			if (!targetFlags.exists("64") && !targetFlags.exists("x86_64") && (command == "rebuild" && (System.hostArchitecture == X86 || System.hostArchitecture == X64)))
 			{
 				commands.push(["-Dlinux", "-DHXCPP_M32"]);
 			}
