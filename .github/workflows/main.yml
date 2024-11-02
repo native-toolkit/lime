@@ -129,8 +129,8 @@ jobs:
 
       - name: Install Haxe dependencies
         run: |
-          curl -LO https://github.com/HaxeFoundation/hxcpp/releases/download/v4.3.45/hxcpp-4.3.45.zip
-          haxelib install ./hxcpp-4.3.45.zip --quiet
+          # TODO: change this to release version when hxcpp releases the patch
+          haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp 47526979c193c6659d053018fb178366b6ff6f72 --quiet
           haxelib install format --quiet
           haxelib install hxp --quiet
 
@@ -143,6 +143,7 @@ jobs:
           haxelib dev lime ${{ github.workspace }}
           haxelib run lime rebuild tools -nocolor -verbose -nocffi
           haxelib run lime setup -alias -y -nocffi
+          lime rebuild hxcpp -nocolor -verbose -nocffi
 
       - name: Rebuild Lime (Linux)
         run: lime rebuild linux -arm64 -release -nocolor -verbose -nocffi -D HXCPP_ARM64
