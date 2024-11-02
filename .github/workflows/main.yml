@@ -130,7 +130,7 @@ jobs:
       - name: Install Haxe dependencies
         run: |
           # TODO: change this to release version when hxcpp releases the patch
-          haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp 47526979c193c6659d053018fb178366b6ff6f72 --quiet
+          haxelib git hxcpp https://github.com/mcagabe19/hxcpp 47526979c193c6659d053018fb178366b6ff6f72 --quiet
           haxelib install format --quiet
           haxelib install hxp --quiet
 
