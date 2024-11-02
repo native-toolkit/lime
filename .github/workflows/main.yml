@@ -163,17 +163,17 @@ jobs:
       - name: Build HelloWorld sample
         run: |
           lime create HelloWorld -verbose -nocolor
-          lime build HelloWorld linux -release -verbose -nocolor
+          lime build HelloWorld linux -arm64 -release -verbose -nocolor -D HXCPP_ARM64
 
       - name: Build SimpleImage sample
         run: |
           lime create SimpleImage -verbose -nocolor
-          lime build SimpleImage linux -release -verbose -nocolor
+          lime build SimpleImage linux -arm64 -release -verbose -nocolor -D HXCPP_ARM64
 
       - name: Build SimpleAudio sample
         run: |
           lime create SimpleAudio -verbose -nocolor
-          lime build SimpleAudio linux -release -verbose -nocolor
+          lime build SimpleAudio linux -arm64 -release -verbose -nocolor -D HXCPP_ARM64
 
   macos:
     runs-on: macos-12
