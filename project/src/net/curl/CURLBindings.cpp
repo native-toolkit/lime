@@ -1698,7 +1698,7 @@ namespace lime {
 
 				if (headerCallbacks.find (handle) != headerCallbacks.end ()) {
 
-          free_header_values (headerValues[handle]);
+					free_header_values (headerValues[handle]);
 					delete headerCallbacks[handle];
 					delete headerValues[handle];
 
@@ -2126,7 +2126,7 @@ namespace lime {
 
 				if (headerCallbacks.find (handle) != headerCallbacks.end ()) {
 
-          free_header_values (headerValues[handle]);
+					free_header_values (headerValues[handle]);
 					delete headerCallbacks[handle];
 					delete headerValues[handle];
 
