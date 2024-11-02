@@ -500,7 +500,7 @@ jobs:
           lime build SimpleAudio ios -release -nosign -verbose -nocolor -eval
 
   package-haxelib:
-    needs: [linux, macos, windows, android, ios]
+    needs: [linux, linuxarm64, macos, windows, android, ios]
     runs-on: ubuntu-20.04
     steps:
 
