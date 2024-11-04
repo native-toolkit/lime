@@ -5,7 +5,7 @@
 	"tags": [],
 	"description": "A foundational Haxe framework for cross-platform development",
 	"version": "8.2.1",
-	"releasenote": "Correct path for raspberrypi ndlls, minor fixes",
+	"releasenote": "Various bug fixes",
 	"contributors": [
 		"singmajesty",
 		"bowlerhat",
