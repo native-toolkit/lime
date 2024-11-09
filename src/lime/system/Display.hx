@@ -26,6 +26,11 @@ class Display
 	public var dpi(default, null):Float;
 
 	/**
+	 * Orientation of the display
+	 */
+	public var orientation(default, null):Int;
+
+	/**
 	 * The name of the device, such as "Samsung SyncMaster P2350", "iPhone 6", "Oculus Rift DK2", etc.
 	**/
 	public var name(default, null):String;

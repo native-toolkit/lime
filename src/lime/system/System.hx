@@ -246,6 +246,7 @@ class System
 			display.id = id;
 			display.name = CFFI.stringValue(displayInfo.name);
 			display.bounds = new Rectangle(displayInfo.bounds.x, displayInfo.bounds.y, displayInfo.bounds.width, displayInfo.bounds.height);
+			display.orientation = displayInfo.orientation;
 
 			#if ios
 			var tablet = NativeCFFI.lime_system_get_ios_tablet();

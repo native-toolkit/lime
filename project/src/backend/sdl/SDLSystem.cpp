@@ -52,6 +52,7 @@ namespace lime {
 	static int id_dpi;
 	static int id_height;
 	static int id_name;
+	static int id_orientation;
 	static int id_pixelFormat;
 	static int id_refreshRate;
 	static int id_supportedModes;
@@ -306,6 +307,7 @@ namespace lime {
 				id_dpi = val_id ("dpi");
 				id_height = val_id ("height");
 				id_name = val_id ("name");
+				id_orientation = val_id ("orientation");
 				id_pixelFormat = val_id ("pixelFormat");
 				id_refreshRate = val_id ("refreshRate");
 				id_supportedModes = val_id ("supportedModes");
@@ -334,6 +336,9 @@ namespace lime {
 			SDL_GetDisplayDPI (id, &dpi, NULL, NULL);
 			#endif
 			alloc_field (display, id_dpi, alloc_float (dpi));
+
+			SDL_DisplayOrientation orientation = SDL_GetDisplayOrientation(id);
+			alloc_field (display, id_orientation, alloc_int (orientation));
 
 			SDL_DisplayMode displayMode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, 0 };
 			DisplayMode mode;
@@ -411,6 +416,7 @@ namespace lime {
 			const int id_dpi = hl_hash_utf8 ("dpi");
 			const int id_height = hl_hash_utf8 ("height");
 			const int id_name = hl_hash_utf8 ("name");
+			const int id_orientation = hl_hash_utf8 ("orientation");
 			const int id_pixelFormat = hl_hash_utf8 ("pixelFormat");
 			const int id_refreshRate = hl_hash_utf8 ("refreshRate");
 			const int id_supportedModes = hl_hash_utf8 ("supportedModes");
@@ -449,6 +455,9 @@ namespace lime {
 			SDL_GetDisplayDPI (id, &dpi, NULL, NULL);
 			#endif
 			hl_dyn_setf (display, id_dpi, dpi);
+
+			SDL_DisplayOrientation orientation = SDL_GetDisplayOrientation(id);
+			hl_dyn_seti (display, id_orientation, &hlt_i32, orientation);
 
 			SDL_DisplayMode displayMode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, 0 };
 			DisplayMode mode;
