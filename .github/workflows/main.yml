@@ -116,9 +116,6 @@ jobs:
           sudo dpkg-deb -x libgles2_1.3.1-1_arm64.deb /
           wget -q http://mirrors.ocf.berkeley.edu/ubuntu-ports/pool/main/libg/libglvnd/libgles-dev_1.3.1-1_arm64.deb
           sudo dpkg-deb -x libgles-dev_1.3.1-1_arm64.deb /
-          echo "CC=aarch64-linux-gnu-gcc" >> $GITHUB_ENV
-          echo "CXX=aarch64-linux-gnu-g++" >> $GITHUB_ENV
-          echo "HXCPP_STRIP=aarch64-linux-gnu-strip" >> $GITHUB_ENV
 
       - uses: krdlab/setup-haxe@v1
         with:
@@ -147,7 +144,9 @@ jobs:
           lime rebuild hxcpp -nocolor -verbose -nocffi
 
       - name: Rebuild Lime (Linux)
-        run: lime rebuild linux -arm64 -release -nocolor -verbose -nocffi -D HXCPP_ARM64
+        run: |
+          lime rebuild linux -64 -release -nocolor -verbose -nocffi
+          CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ HXCPP_STRIP=aarch64-linux-gnu-strip lime rebuild linux -arm64 -release -nocolor -verbose -nocffi -D HXCPP_ARM64
 
       - uses: actions/upload-artifact@v3
         with:
