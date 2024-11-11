@@ -30,7 +30,6 @@ class LinuxPlatform extends PlatformTarget
 	private var executablePath:String;
 	private var is64:Bool;
 	private var isArm:Bool;
-	private var isRaspberryPi:Bool;
 	private var targetType:String;
 
 	public function new(command:String, _project:HXProject, targetFlags:Map<String, String>)
