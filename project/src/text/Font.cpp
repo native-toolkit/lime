@@ -944,29 +944,33 @@ namespace lime {
 	}
 
 
-	int Font::RenderGlyph (int index, Bytes *bytes, int offset) {
-
-		if (FT_Load_Glyph ((FT_Face)face, index, FT_LOAD_FORCE_AUTOHINT | FT_LOAD_DEFAULT) == 0) {
-
-			if (FT_Render_Glyph (((FT_Face)face)->glyph, FT_RENDER_MODE_NORMAL) == 0) {
-
+	int Font::RenderGlyph(int index, Bytes *bytes, int offset)
+	{
+		if (FT_Load_Glyph((FT_Face)face, index, FT_LOAD_FORCE_AUTOHINT | FT_LOAD_DEFAULT) == 0)
+		{
+			if (FT_Render_Glyph(((FT_Face)face)->glyph, FT_RENDER_MODE_LCD) == 0)
+			{
 				FT_Bitmap bitmap = ((FT_Face)face)->glyph->bitmap;
 
 				int height = bitmap.rows;
-				int width = bitmap.width;
+				int width = bitmap.width / 3; //Due to each pixel now has 3 components (R, G, B)
 				int pitch = bitmap.pitch;
 
-				if (width == 0 || height == 0) return 0;
+				if (width == 0 || height == 0)
+					return 0;
 
-				uint32_t size = (4 * 5) + (width * height);
+				//We calculate the size needed for the glyph image, including metadata and 24-bit RGB color data
+				uint32_t size = sizeof(GlyphImage) + (width * height * 4);
 
-				if (bytes->length < size + offset) {
-
-					bytes->Resize (size + offset);
-
+				if (bytes->length < size + offset)
+				{
+					bytes->Resize(size + offset);
 				}
 
-				GlyphImage *data = (GlyphImage*)(bytes->b + offset);
+				GlyphImage *data = (GlyphImage *)(bytes->b + offset);
+
+				//We should initialize the GlyphImage struct here with zero to avoid uninitialized values
+				memset(data, 0, sizeof(GlyphImage));
 
 				data->index = index;
 				data->width = width;
@@ -974,22 +978,34 @@ namespace lime {
 				data->x = ((FT_Face)face)->glyph->bitmap_left;
 				data->y = ((FT_Face)face)->glyph->bitmap_top;
 
-				unsigned char* position = &data->data;
+				unsigned char *position = &data->data;
 
-				for (int i = 0; i < height; i++) {
-
-					memcpy (position + (i * width), bitmap.buffer + (i * pitch), width);
-
+				//Copy the bitmap data row by row, copying each RGB triplet and adding padding for 32-bit alignment
+				for (int i = 0; i < height; i++)
+				{
+					for (int j = 0; j < width; j++)
+					{
+						unsigned char r = bitmap.buffer[i * pitch + j * 3 + 0];
+						unsigned char g = bitmap.buffer[i * pitch + j * 3 + 1];
+						unsigned char b = bitmap.buffer[i * pitch + j * 3 + 2];
+						unsigned char a = (r + g + b) / 3;
+						
+						//Red
+						position[(i * width + j) * 4 + 0] = r;
+						//Green
+						position[(i * width + j) * 4 + 1] = g;
+						//Blue
+						position[(i * width + j) * 4 + 2] = b;
+						//Alpha
+						position[(i * width + j) * 4 + 3] = a;
+					}
 				}
 
 				return size;
-
 			}
-
 		}
 
 		return 0;
-
 	}
 
 
@@ -1023,14 +1039,22 @@ namespace lime {
 		return totalOffset;
 
 	}
+	
+	void Font::SetSize(size_t size, size_t dpi)
+	{
+		//We changed the function signature to include a dpi argument which changes this from 
+		//the default value of 72 for dpi. Any public api that uses this should probably be changed
+		//to allow setting the dpi in an appropriate future release.
+		size_t hdpi = dpi;
+		size_t vdpi = dpi;
 
-
-	void Font::SetSize (size_t size) {
-
-		size_t hdpi = 72;
-		size_t vdpi = 72;
-
-		FT_Set_Char_Size ((FT_Face)face, (int)(size*64), (int)(size*64), hdpi, vdpi);
+		FT_Set_Char_Size(
+			(FT_Face)face,						//Handle to the target face object
+			0,									//Char width in 1/64th of points (0 means same as height)
+			static_cast<int>(size * 64), 		//Char height in 1/64th of points
+			hdpi,								//Horizontal DPI
+			vdpi								//Vertical DPI
+		);
 		mSize = size;
 
 	}

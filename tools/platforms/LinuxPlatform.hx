@@ -123,7 +123,7 @@ class LinuxPlatform extends PlatformTarget
 
 		for (architecture in project.architectures)
 		{
-			if (!targetFlags.exists("32") && !targetFlags.exists("x86_32") && architecture == Architecture.X64)
+			if (!targetFlags.exists("32") && !targetFlags.exists("x86_32") && (architecture == Architecture.X64 || architecture == Architecture.ARM64))
 			{
 				is64 = true;
 			}
@@ -137,11 +137,6 @@ class LinuxPlatform extends PlatformTarget
 				isArm = true;
 				is64 = false;
 			}
-		}
-
-		if (project.targetFlags.exists("rpi"))
-		{
-			isRaspberryPi = true;
 		}
 
 		if (project.targetFlags.exists("neko"))
@@ -166,7 +161,13 @@ class LinuxPlatform extends PlatformTarget
 			targetType = "cpp";
 		}
 
-		targetDirectory = Path.combine(project.app.path, project.config.getString("linux.output-directory", targetType == "cpp" ? "linux" : targetType));
+		var defaultTargetDirectory = switch (targetType)
+		{
+			case "cpp": "linux";
+			case "hl": project.targetFlags.exists("hlc") ? "hlc" : targetType;
+			default: targetType;
+		}
+		targetDirectory = Path.combine(project.app.path, project.config.getString("linux.output-directory", defaultTargetDirectory));
 		targetDirectory = StringTools.replace(targetDirectory, "arch64", is64 ? "64" : "");
 		applicationDirectory = targetDirectory + "/bin/";
 		executablePath = Path.combine(applicationDirectory, project.app.file);
@@ -198,7 +199,7 @@ class LinuxPlatform extends PlatformTarget
 				}
 				else
 				{
-					ProjectHelper.copyLibrary(project, ndll, "Linux" + (is64 ? "64" : ""), "",
+					ProjectHelper.copyLibrary(project, ndll, "Linux" + (( System.hostArchitecture == ARMV7 || System.hostArchitecture == ARM64)?"Arm":"") + (is64 ? "64" : ""), "",
 						(ndll.haxelib != null
 							&& (ndll.haxelib.name == "hxcpp" || ndll.haxelib.name == "hxlibc")) ? ".dll" : ".ndll", applicationDirectory,
 						project.debug, targetSuffix);
@@ -419,7 +420,7 @@ class LinuxPlatform extends PlatformTarget
 	{
 		// var project = project.clone ();
 
-		if (isRaspberryPi)
+		if(targetFlags.exists('rpi'))
 		{
 			project.haxedefs.set("rpi", 1);
 		}

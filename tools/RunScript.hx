@@ -71,13 +71,13 @@ class RunScript
 						}
 
 					case "Linux", "LinuxArm":
-						if (System.hostPlatform == LINUX && System.hostArchitecture != X64)
+						if (System.hostPlatform == LINUX && System.hostArchitecture != X64 && System.hostArchitecture != ARM64)
 						{
 							System.runCommand(limeDirectory, "neko", args.concat(["linux", "-32", toolsDirectory]));
 						}
 
-					case "Linux64", "LinuxArm64":
-						if (System.hostPlatform == LINUX && System.hostArchitecture == X64)
+					case "Linux64", "LinuxArm64"
+						if (System.hostPlatform == LINUX && (System.hostArchitecture == X64 || System.hostArchitecture == ARM64))
 						{
 							System.runCommand(limeDirectory, "neko", args.concat(["linux", "-64", toolsDirectory]));
 						}
