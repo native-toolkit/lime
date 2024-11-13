@@ -1,7 +1,5 @@
 <xml>
 
-	<!-- TODO: ARM64 NEON -->
-
 	<!-- <set name="PIXMAN_ARM_SIMD" value="1" if="android" unless="HXCPP_ARMV7 || HXCPP_ARMV7S || HXCPP_ARM64 || HXCPP_X86" /> -->
 	<set name="PIXMAN_ARM_NEON" value="1" if="HXCPP_ARMV7 || HXCPP_ARMV7S" unless="windows || ios || NDKV22+ || HXCPP_ARM64" />
 	<set name="PIXMAN_ARM_A64_NEON" value="1" if="HXCPP_ARM64" unless="windows || ios || mac || NDKV22+ || HXCPP_ARMV7 || HXCPP_ARMV7S" />
