@@ -596,6 +596,7 @@ namespace lime {
 
 				}
 
+				free_header_values (values);
 				values->clear ();
 
 			}
@@ -703,6 +704,7 @@ namespace lime {
 
 				}
 
+				free_header_values (values);
 				values->clear ();
 
 			}
