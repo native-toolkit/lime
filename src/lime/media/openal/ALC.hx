@@ -247,9 +247,6 @@ class ALC
 				_attributes[i] = attributes[i];
 		}
 		var attributes = _attributes;
-		trace("d" + device);
-		trace("n" + newDeviceName);
-		trace("a" + attributes);
 		#end
 		return NativeCFFI.lime_alc_reopen_device_soft(device, newDeviceName, attributes);
 		#else

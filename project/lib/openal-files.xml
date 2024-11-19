@@ -125,7 +125,7 @@
             <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/include/configs/rpi/" if="rpi" />
             <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl/include/configs/windows/" if="windows" />
 
-            <compilerflag value="-DHAVE_SDL2" />
+            <compilerflag value="-DHAVE_SDL2=1" />
             <file name="${NATIVE_TOOLKIT_PATH}/openal/alc/backends/sdl2.cpp" />
 
         </section>
