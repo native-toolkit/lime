@@ -324,6 +324,12 @@ class IOSHelper
 
 			var currentDeviceID = XCodeHelper.getSimulatorID(project);
 
+			if (Log.verbose)
+			{
+				var currentSimulatorName = XCodeHelper.getSimulatorName(project);
+				Log.info("Using iOS simulator: " + currentSimulatorName);
+			}
+
 			try
 			{
 				System.runProcess("", "open", ["-Ra", "iOS Simulator"], true, false);

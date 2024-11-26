@@ -60,7 +60,11 @@ class XCodeHelper
 		{
 			if (StringTools.startsWith(line, "--"))
 			{
-				if (line.indexOf("iOS") > -1)
+				if (line.indexOf("Unavailable") > -1)
+				{
+					foundSection = false;
+				}
+				else if (line.indexOf("iOS") > -1)
 				{
 					foundSection = true;
 				}
