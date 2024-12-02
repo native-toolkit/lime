@@ -185,9 +185,6 @@
             <compilerflag value="/EHsc" />
             <compilerflag value="-Dstrcasecmp=_stricmp" />
             <compilerflag value="-Dstrncasecmp=_strnicmp" />
-            <!-- TODO: I kept getting errors in alnumeric.h and this flag solved it. -->
-            <!-- It's not a solution; but rather a workaround and it's also apparently unsafe -->
-            <!-- so it would probably be best for it to be somehow fixed asap -->
             <compilerflag value="/permissive-" />
             <compilerflag value="/utf-8" />
 
