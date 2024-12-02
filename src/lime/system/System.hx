@@ -191,7 +191,18 @@ class System
 	#if (!lime_doc_gen || sys)
 	/**
 		Attempts to exit the application. Dispatches `onExit`, and will not
-		exit if the event is canceled.
+		exit if the event is canceled. When exiting using this method, Lime will
+		gracefully shut down a number of subsystems, including (but not limited
+		to) audio, graphics, timers, and game controllers.
+
+		To properly exit a Lime application, it's best to call Lime's
+		`System.exit()` instead of calling Haxe's built-in `Sys.exit()`. When
+		targeting native platforms especially, Lime's is built on C++ libraries
+		that expose functions to clean up resources properly on exit. Haxe's
+		`Sys.exit()` exits immediately without giving Lime a chance to clean
+		things up. With that in mind, the proper and correct way to exit a Lime
+		app is by calling `lime.system.System.exit()`, and to avoid using
+		`Sys.exit()`.
 	**/
 	public static function exit(code:Int):Void
 	{

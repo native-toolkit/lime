@@ -460,7 +460,7 @@ class ThreadPool extends WorkOutput
 				{
 					while (!output.__jobComplete.value && (interruption = Thread.readMessage(false)) == null)
 					{
-						output.workIterations.value++;
+						output.workIterations.value = output.workIterations.value + 1;
 						event.doWork.dispatch(event.state, output);
 					}
 				}
@@ -572,7 +572,7 @@ class ThreadPool extends WorkOutput
 			{
 				do
 				{
-					workIterations.value++;
+					workIterations.value = workIterations.value + 1;
 					activeJob.doWork.dispatch(state, this);
 					timeElapsed = timestamp() - startTime;
 				}
