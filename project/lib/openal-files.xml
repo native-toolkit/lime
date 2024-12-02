@@ -10,6 +10,7 @@
         <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/custom/openal/include/" />
         <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/openal/include/" />
         <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/openal/core/" />
+        <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/openal/fmt-11.0.2/include/" />
 
         <compilerflag value="-DAL_LIBTYPE_STATIC" if="native_toolkit_openal_static" />
 
@@ -115,6 +116,9 @@
         <file name="${NATIVE_TOOLKIT_PATH}/openal/core/storage_formats.cpp" />
         <file name="${NATIVE_TOOLKIT_PATH}/openal/alc/events.cpp" />
 
+        <file name="${NATIVE_TOOLKIT_PATH}/openal/fmt-11.0.2/src/format.cc" />
+        <file name="${NATIVE_TOOLKIT_PATH}/openal/fmt-11.0.2/src/os.cc" />
+
         <section if="NATIVE_TOOLKIT_HAVE_SDL">
 
             <compilerflag value="-I${NATIVE_TOOLKIT_PATH}/custom/sdl/include/" />
@@ -185,6 +189,7 @@
             <!-- It's not a solution; but rather a workaround and it's also apparently unsafe -->
             <!-- so it would probably be best for it to be somehow fixed asap -->
             <compilerflag value="/permissive-" />
+            <compilerflag value="/utf-8" />
 
         </section>
 
