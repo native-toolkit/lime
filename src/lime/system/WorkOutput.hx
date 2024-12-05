@@ -98,7 +98,7 @@ class WorkOutput
 			__jobComplete.value = true;
 
 			#if (lime_threads && html5)
-			if (mode == MULTI_THREADED)
+			if (Thread.current().isWorker())
 			{
 				Thread.returnMessage({event: COMPLETE, message: message, jobID: activeJob.id}, transferList);
 			}
@@ -122,7 +122,7 @@ class WorkOutput
 			__jobComplete.value = true;
 
 			#if (lime_threads && html5)
-			if (mode == MULTI_THREADED)
+			if (Thread.current().isWorker())
 			{
 				Thread.returnMessage({event: ERROR, message: message, jobID: activeJob.id}, transferList);
 			}
@@ -144,7 +144,7 @@ class WorkOutput
 		if (!__jobComplete.value)
 		{
 			#if (lime_threads && html5)
-			if (mode == MULTI_THREADED)
+			if (Thread.current.isWorker())
 			{
 				Thread.returnMessage({event: PROGRESS, message: message, jobID: activeJob.id}, transferList);
 			}
