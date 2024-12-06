@@ -28,6 +28,16 @@ class AssetsMacro
 
 	macro public static function embedBytes():Array<Field>
 	{
+		for (autoBuild in Context.getLocalClass().get().meta.extract(":autoBuild"))
+		{
+			switch (autoBuild.params[0])
+			{
+				case macro lime._internal.macros.AssetsMacro.embedByteArray():
+					return null;
+				default:
+			}
+		}
+
 		var fields = embedData(":file");
 		if (fields == null) return null;
 
