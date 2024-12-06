@@ -28,6 +28,9 @@ class AssetsMacro
 
 	macro public static function embedBytes():Array<Field>
 	{
+		var fields = embedData(":file");
+		if (fields == null) return null;
+
 		for (autoBuild in Context.getLocalClass().get().meta.extract(":autoBuild"))
 		{
 			switch (autoBuild.params[0])
@@ -37,9 +40,6 @@ class AssetsMacro
 				default:
 			}
 		}
-
-		var fields = embedData(":file");
-		if (fields == null) return null;
 
 		var superCall = Context.defined("html5") ? macro super(bytes.b.buffer)
 			: Context.defined("hl") ? macro super(bytes.b, bytes.length)
