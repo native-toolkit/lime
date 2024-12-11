@@ -60,19 +60,14 @@ import lime._internal.backend.html5.HTML5Thread as Thread;
 #end
 class ThreadPool extends WorkOutput
 {
-	#if (haxe4 && lime_threads)
+	#if (haxe4 && lime_threads && !html5)
 	/**
 		A thread or null value to be compared against `Thread.current()`. Don't
 		do anything with this other than check for equality.
 
 		Unavailable in Haxe 3 as thread equality checking doesn't work there.
 	**/
-	private static var __mainThread:Thread =
-		#if html5
-		!Thread.current().isWorker() ? Thread.current() : null;
-		#else
-		Thread.current();
-		#end
+	private static var __mainThread:Thread = Thread.current();
 	#end
 
 	/**
@@ -99,7 +94,9 @@ class ThreadPool extends WorkOutput
 	**/
 	public static inline function isMainThread():Bool
 	{
-		#if (haxe4 && lime_threads)
+		#if (html5 && lime_threads)
+		return !Thread.current().isWorker();
+		#elseif (haxe4 && lime_threads)
 		return Thread.current() == __mainThread;
 		#else
 		return true;
