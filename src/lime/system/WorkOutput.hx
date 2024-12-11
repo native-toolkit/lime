@@ -144,7 +144,7 @@ class WorkOutput
 		if (!__jobComplete.value)
 		{
 			#if (lime_threads && html5)
-			if (Thread.current.isWorker())
+			if (Thread.current().isWorker())
 			{
 				Thread.returnMessage({event: PROGRESS, message: message, jobID: activeJob.id}, transferList);
 			}
