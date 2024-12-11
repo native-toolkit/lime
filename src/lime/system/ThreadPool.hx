@@ -107,7 +107,7 @@ class ThreadPool extends WorkOutput
 		The number of live threads in this pool, including both active and idle
 		threads. Does not count threads that have been instructed to shut down.
 
-		In single-threaded mode, this will equal `activeJobs`.
+		Counts the main thread, if there is a single-threaded job ongoing.
 	**/
 	public var currentThreads(get, never):Int;
 
@@ -133,9 +133,9 @@ class ThreadPool extends WorkOutput
 	/**
 		__Set this only from the main thread.__
 
-		The number of threads that will be kept alive at all times, even if
-		there's no work to do. Setting this won't immediately spin up new
-		threads; you must still call `run()` to get them started.
+		The number of background threads that will be kept alive at all times,
+		even if there's no work to do. Setting this won't immediately spin up
+		new threads; you must still call `run()` to get them started.
 	**/
 	public var minThreads:Int;
 
@@ -164,8 +164,9 @@ class ThreadPool extends WorkOutput
 	public var onRun(default, null) = new Event<State->Void>();
 
 	/**
-		(Single-threaded mode only.) How important this pool's jobs are relative
-		to other single-threaded pools.
+		How important this pool's single-threaded jobs are, relative to other
+		pools. Pools will be allocated a share of the time per frame (see
+		`workLoad`) based on their importance.
 
 		For instance, if all pools use the default priority of 1, they will all
 		run for an approximately equal amount of time each frame. If one has a
