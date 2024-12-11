@@ -12,6 +12,7 @@ import cpp.vm.Thread;
 import neko.vm.Thread;
 #elseif html5
 import lime._internal.backend.html5.HTML5Thread as Thread;
+import lime._internal.backend.html5.HTML5Thread.Transferable;
 #end
 
 /**
