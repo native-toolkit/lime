@@ -2053,6 +2053,7 @@ namespace lime {
 		} else {
 
 			Vector2* _alphaPoint = alphaPoint;
+			
 			if (!_alphaPoint) {
 
 				Vector2 tempAlphaPoint = Vector2(0, 0);
