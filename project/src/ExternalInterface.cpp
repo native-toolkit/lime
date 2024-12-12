@@ -2052,16 +2052,10 @@ namespace lime {
 
 		} else {
 
-			Vector2* _alphaPoint = alphaPoint ? alphaPoint : new Vector2(0, 0);
+			Vector2 tempPoint = Vector2(0, 0);
+			Vector2* _alphaPoint = alphaPoint ? alphaPoint : &tempPoint;
 
 			ImageDataUtil::CopyPixels (image, sourceImage, sourceRect, destPoint, alphaImage, _alphaPoint, mergeAlpha);
-
-			if (!alphaPoint) {
-
-				delete _alphaPoint;
-
-			}
-
 		}
 
 	}
