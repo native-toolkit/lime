@@ -311,13 +311,6 @@ class ImageDataUtil
 		else
 		{
 			#if (lime_cffi && !disable_cffi && !macro)
-			#if hl
-			if (alphaPoint == null)
-			{
-				alphaPoint = new Vector2();
-			}
-			#end
-
 			if (CFFI.enabled) NativeCFFI.lime_image_data_util_copy_pixels(image, sourceImage, sourceRect, destPoint, alphaImage, alphaPoint, mergeAlpha);
 			else
 			#end
