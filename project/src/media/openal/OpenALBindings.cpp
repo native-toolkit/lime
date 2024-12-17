@@ -3628,8 +3628,6 @@ namespace lime {
 
 		alSoftEventCallback = new ValuePointer (callback);
 
-		printf("Pre callback register\n");
-
 		//TODO: What is userParam?
 		alcEventCallbackSOFT (hl_alsoft_callback_function, NULL);
 		#endif

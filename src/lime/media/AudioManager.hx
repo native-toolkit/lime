@@ -43,11 +43,8 @@ class AudioManager
 					var version:String = alc.getString(AL.VERSION);
 					var alSoft:Bool = StringTools.contains(version, "ALSOFT");
 
-					// These things are only valid on OpenAL Soft.
 					if (alSoft)
 					{
-						// TODO: Do we need to check if the extension is present?
-						// If so, this needs to be merged beforehand: https://github.com/openfl/lime/pull/1832
 						alc.disable(AL.STOP_SOURCES_ON_DISCONNECT_SOFT);
 
 						Application.current.onUpdate.add((_) -> {

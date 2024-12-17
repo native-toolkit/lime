@@ -99,13 +99,10 @@
         <file name="${NATIVE_TOOLKIT_PATH}/openal/core/voice.cpp" />
         <file name="${NATIVE_TOOLKIT_PATH}/openal/common/alcomplex.cpp" />
         <file name="${NATIVE_TOOLKIT_PATH}/openal/core/except.cpp" />
-        <!-- <file name="${NATIVE_TOOLKIT_PATH}/openal/common/alfstream.cpp" /> -->
-        <!-- <file name="${NATIVE_TOOLKIT_PATH}/openal/common/almalloc.cpp" /> -->
         <file name="${NATIVE_TOOLKIT_PATH}/openal/common/alstring.cpp" />
         <file name="${NATIVE_TOOLKIT_PATH}/openal/common/dynload.cpp" />
         <file name="${NATIVE_TOOLKIT_PATH}/openal/common/polyphase_resampler.cpp" />
         <file name="${NATIVE_TOOLKIT_PATH}/openal/common/strutils.cpp" />
-        <!-- <file name="${NATIVE_TOOLKIT_PATH}/openal/common/threads.cpp" /> -->
         <file name="${NATIVE_TOOLKIT_PATH}/openal/core/devformat.cpp" />
         <file name="${NATIVE_TOOLKIT_PATH}/openal/common/alsem.cpp" />
         <file name="${NATIVE_TOOLKIT_PATH}/openal/al/debug.cpp" />
