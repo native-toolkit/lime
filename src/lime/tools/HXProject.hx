@@ -773,6 +773,8 @@ class HXProject extends Script
 			}
 			else
 			{
+				targetFlags.set("neko", "1");
+
 				defines.set("targetType", "neko");
 				defines.set("neko", "1");
 			}
