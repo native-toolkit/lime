@@ -580,7 +580,7 @@ class WindowsPlatform extends PlatformTarget
 
 					System.copyFile(targetDirectory + "/obj/ApplicationMain" + (project.debug ? "-debug" : "") + ".exe", executablePath);
 
-					if (project.targetFlags.exists("mingw"))
+					if (project.defines.exists("mingw"))
 					{
 						var libraries = ["libwinpthread-1.dll", "libstdc++-6.dll"];
 						if (is64)
