@@ -28,8 +28,9 @@ namespace lime {
 	SDL_Cursor* SDLCursor::waitCursor = 0;
 	SDL_Cursor* SDLCursor::waitArrowCursor = 0;
 
+	#if !defined (IPHONE) && !defined (APPLETV)
 	static bool displayModeSet = false;
-
+	#endif
 
 	SDLWindow::SDLWindow (Application* application, int width, int height, int flags, const char* title) {
 
@@ -41,11 +42,17 @@ namespace lime {
 		contextHeight = 0;
 
 		currentApplication = application;
+
 		this->flags = flags;
 
 		int sdlWindowFlags = 0;
 
+		#if defined (IPHONE) || defined (APPLETV)
+		if (flags & WINDOW_FLAG_FULLSCREEN) sdlWindowFlags |= SDL_WINDOW_FULLSCREEN;
+		#else
 		if (flags & WINDOW_FLAG_FULLSCREEN) sdlWindowFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+		#endif
+
 		if (flags & WINDOW_FLAG_RESIZABLE) sdlWindowFlags |= SDL_WINDOW_RESIZABLE;
 		if (flags & WINDOW_FLAG_BORDERLESS) sdlWindowFlags |= SDL_WINDOW_BORDERLESS;
 		if (flags & WINDOW_FLAG_HIDDEN) sdlWindowFlags |= SDL_WINDOW_HIDDEN;
@@ -70,7 +77,7 @@ namespace lime {
 		}
 		#endif
 
-		#if !defined(EMSCRIPTEN) && !defined(LIME_SWITCH)
+		#if !defined (EMSCRIPTEN) && !defined (LIME_SWITCH)
 		SDL_SetHint (SDL_HINT_ANDROID_TRAP_BACK_BUTTON, "0");
 		SDL_SetHint (SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH, "1");
 		SDL_SetHint (SDL_HINT_MOUSE_TOUCH_EVENTS, "0");
@@ -251,7 +258,7 @@ namespace lime {
 
 				}
 
-				#elif defined(IPHONE) || defined(APPLETV)
+				#elif defined (IPHONE) || defined (APPLETV)
 
 				// SDL_SysWMinfo windowInfo;
 				// SDL_GetWindowWMInfo (sdlWindow, &windowInfo);
@@ -948,6 +955,7 @@ namespace lime {
 
 		SDL_DisplayMode mode = { pixelFormat, displayMode->width, displayMode->height, displayMode->refreshRate, 0 };
 
+		#if !defined (IPHONE) && !defined (APPLETV)
 		if (SDL_SetWindowDisplayMode (sdlWindow, &mode) == 0) {
 
 			displayModeSet = true;
@@ -959,13 +967,16 @@ namespace lime {
 			}
 
 		}
-
+		#else
+		SDL_SetWindowDisplayMode (sdlWindow, &mode);
+		#endif
 	}
-
 
 	bool SDLWindow::SetFullscreen (bool fullscreen) {
 
 		if (fullscreen) {
+
+			#if !defined (IPHONE) && !defined (APPLETV)
 
 			if (displayModeSet) {
 
@@ -976,6 +987,12 @@ namespace lime {
 				SDL_SetWindowFullscreen (sdlWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
 
 			}
+
+			#else
+
+			SDL_SetWindowFullscreen (sdlWindow, SDL_WINDOW_FULLSCREEN);
+
+			#endif
 
 		} else {
 
