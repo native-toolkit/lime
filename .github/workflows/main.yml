@@ -93,7 +93,7 @@ jobs:
           lime build SimpleAudio linux -release -verbose -nocolor
 
   macos:
-    runs-on: macos-12
+    runs-on: macos-13
     steps:
 
       - uses: actions/checkout@v4
@@ -353,7 +353,7 @@ jobs:
           lime create SimpleAudio -verbose -nocolor -eval
           lime build SimpleAudio android -release -verbose -nocolor -eval
   ios:
-    runs-on: macos-12
+    runs-on: macos-13
     steps:
 
       - uses: actions/checkout@v4
@@ -659,7 +659,7 @@ jobs:
     needs: package-haxelib
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-20.04, macos-12]
+        os: [windows-latest, ubuntu-20.04, macos-13]
     runs-on: ${{ matrix.os }}
     steps:
 
@@ -709,7 +709,7 @@ jobs:
     needs: package-haxelib
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-20.04, macos-12]
+        os: [windows-latest, ubuntu-20.04, macos-13]
     runs-on: ${{ matrix.os }}
     steps:
 
@@ -816,7 +816,7 @@ jobs:
     strategy:
       matrix:
         haxe-version: [3.4.7, 4.2.5]
-        os: [windows-latest, ubuntu-20.04, macos-12]
+        os: [windows-latest, ubuntu-20.04, macos-13]
     runs-on: ${{ matrix.os }}
     steps:
 

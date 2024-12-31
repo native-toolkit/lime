@@ -110,6 +110,12 @@
 			<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/freetype/include" />
 			<compilerflag value="-DLIME_FREETYPE" />
 
+			<!--
+				prefer FreeType's font metrics algorithm from 2.9.1
+				it behaves more like SWF than the new algorithm
+			-->
+			<compilerflag value="-DLIME_FREETYPE_LEGACY_METRICS" />
+
 			<file name="src/text/Font.cpp" />
 
 			<section if="LIME_HARFBUZZ">
