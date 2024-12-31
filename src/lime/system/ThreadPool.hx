@@ -63,10 +63,7 @@ class ThreadPool extends WorkOutput
 {
 	#if (haxe4 && lime_threads && !html5)
 	/**
-		A thread or null value to be compared against `Thread.current()`. Don't
-		do anything with this other than check for equality.
-
-		Unavailable in Haxe 3 as thread equality checking doesn't work there.
+		A reference to the app's main thread, for use in `isMainThread()`.
 	**/
 	private static var __mainThread:Thread = Thread.current();
 	#end
