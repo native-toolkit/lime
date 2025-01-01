@@ -70,8 +70,9 @@ class ThreadPool extends WorkOutput
 
 	/**
 		A rough estimate of how much of the app's time should be spent on
-		single-threaded `ThreadPool`s. For instance, the default value of 1/2
-		means they'll use about half the app's available time every frame.
+		single-threaded jobs, across all active `ThreadPool`s. For instance, the
+		default value of 1/2 means `ThreadPool`s will attempt to use about half
+		the app's available time every frame.
 
 		The accuracy of this estimate depends on how often your work functions
 		return. If you find that a `ThreadPool` is taking longer than scheduled,
@@ -107,22 +108,22 @@ class ThreadPool extends WorkOutput
 	public var activeJobs(get, never):Int;
 
 	/**
-		The number of live threads in this pool, including both active and idle
-		threads. Does not count threads that have been instructed to shut down.
+		The number of background threads in this pool, including both active and
+		idle threads. Excludes threads that have been instructed to shut down.
 	**/
 	public var currentThreads(get, never):Int;
 
 	/**
-		The number of live threads in this pool that aren't currently working on
-		anything. In single-threaded mode, this will always be 0.
+		The number of background threads in this pool that aren't currently
+		working on anything.
 	**/
 	public var idleThreads(get, never):Int;
 
 	/**
 		__Set this only from the main thread.__
 
-		The maximum number of live threads this pool can have at once. If this
-		value decreases, active jobs will still be allowed to finish.
+		The maximum number of background threads this pool can have at once. If
+		this value decreases, active jobs will still be allowed to finish.
 	**/
 	public var maxThreads:Int;
 
@@ -194,8 +195,7 @@ class ThreadPool extends WorkOutput
 
 		@param minThreads The number of threads that will be kept alive at all
 		times, even if there's no work to do. The threads won't spin up
-		immediately; only after enough calls to `run()`. Only applies in
-		multi-threaded mode.
+		immediately; only after enough calls to `run()`.
 		@param maxThreads The maximum number of threads that will run at once.
 		@param mode The mode jobs will run in by default. Defaults to
 		`SINGLE_THREADED` in HTML5 for backwards compatibility.
@@ -214,8 +214,11 @@ class ThreadPool extends WorkOutput
 	}
 
 	/**
-		Cancels all active and queued jobs. In multi-threaded mode, leaves
-		`minThreads` idle threads running.
+		Cancels all active and queued jobs.
+
+		Note: It isn't possible to terminate a job from the outside, so canceled
+		jobs may continue to run for some time. However, any events they send
+		will be ignored.
 		@param error If not null, this error will be dispatched for each active
 		or queued job.
 	**/
@@ -302,6 +305,10 @@ class ThreadPool extends WorkOutput
 
 	/**
 		Cancels one active or queued job. Does not dispatch an error event.
+
+		Note: It isn't possible to terminate a job from the outside, so the job
+		may continue to run for some time. However, any events it sends will be
+		ignored.
 		@return Whether a job was canceled.
 	**/
 	public function cancelJob(jobID:Int):Bool
@@ -343,13 +350,13 @@ class ThreadPool extends WorkOutput
 	}
 
 	/**
-		Runs the given function asynchronously, or queues it for later if all
-		threads are busy.
+		Runs the given function asynchronously, or queues it for later if no
+		more threads are available.
 		@param doWork The function to run. For best results, see the guidelines
 		in the `ThreadPool` class overview. In brief: `doWork` should be static,
 		only access its arguments, and return often.
-		@param state An object to pass to `doWork`, ideally a mutable object so
-		that `doWork` can save its progress.
+		@param state An object to pass to `doWork`. Consider passing a mutable
+		object so that `doWork` can save its progress.
 		@param mode Which mode to run the job in. If omitted, the pool's default
 		mode will be used.
 		@return The job's unique ID.
