@@ -102,17 +102,15 @@ class ThreadPool extends WorkOutput
 	}
 
 	/**
-		The number of live threads in this pool, including both active and idle
-		threads. Does not count threads that have been instructed to shut down.
-
-		Counts the main thread, if there is a single-threaded job ongoing.
-	**/
-	public var currentThreads(get, never):Int;
-
-	/**
 		The number of jobs actively being executed.
 	**/
 	public var activeJobs(get, never):Int;
+
+	/**
+		The number of live threads in this pool, including both active and idle
+		threads. Does not count threads that have been instructed to shut down.
+	**/
+	public var currentThreads(get, never):Int;
 
 	/**
 		The number of live threads in this pool that aren't currently working on
@@ -782,7 +780,7 @@ class ThreadPool extends WorkOutput
 
 	private inline function get_currentThreads():Int
 	{
-		return activeJobs + idleThreads;
+		return #if lime_threads __multiThreadedJobs.length + __idleThreads.length #else 0 #end;
 	}
 
 	private function get_doWork():PseudoEvent
