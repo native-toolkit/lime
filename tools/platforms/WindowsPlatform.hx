@@ -921,6 +921,11 @@ class WindowsPlatform extends PlatformTarget
 			project.haxeflags.push("-xml " + targetDirectory + "/types.xml");
 		}
 
+		if (project.targetFlags.exists("json"))
+		{
+			project.haxeflags.push("--json " + targetDirectory + "/types.json");
+		}
+
 		for (asset in project.assets)
 		{
 			if (asset.embed && asset.sourcePath == "")
@@ -1065,6 +1070,11 @@ class WindowsPlatform extends PlatformTarget
 		if (project.targetFlags.exists("xml"))
 		{
 			project.haxeflags.push("-xml " + targetDirectory + "/types.xml");
+		}
+
+		if (project.targetFlags.exists("json"))
+		{
+			project.haxeflags.push("--json " + targetDirectory + "/types.json");
 		}
 
 		if (Log.verbose)

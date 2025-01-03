@@ -168,6 +168,11 @@ class TVOSPlatform extends PlatformTarget
 			project.haxeflags.push("-xml " + targetDirectory + "/types.xml");
 		}
 
+		if (project.targetFlags.exists("json"))
+		{
+			project.haxeflags.push("--json " + targetDirectory + "/types.json");
+		}
+
 		if (project.targetFlags.exists("final"))
 		{
 			project.haxedefs.set("final", "");
