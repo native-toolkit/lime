@@ -235,18 +235,15 @@ class ThreadPool extends WorkOutput
 		// Cancel active jobs, leaving `minThreads` idle threads.
 		for (job in __multiThreadedJobs)
 		{
-			if (mode == MULTI_THREADED)
+			var thread:Thread = job.thread;
+			if (idleThreads < minThreads)
 			{
-				var thread:Thread = job.thread;
-				if (idleThreads < minThreads)
-				{
-					thread.sendMessage({event: CANCEL});
-					__idleThreads.push(thread);
-				}
-				else
-				{
-					thread.sendMessage({event: EXIT});
-				}
+				thread.sendMessage({event: CANCEL});
+				__idleThreads.push(thread);
+			}
+			else
+			{
+				thread.sendMessage({event: EXIT});
 			}
 
 			if (error != null)
@@ -619,11 +616,17 @@ class ThreadPool extends WorkOutput
 		var endTime:Float = timestamp();
 		if (__totalWorkPriority > 0)
 		{
+			// Lime may be run without a window.
+			var frameRate:Float = 60;
+			if (Application.current.window != null)
+			{
+				frameRate = Application.current.window.frameRate;
+			}
+
 			// `workLoad / frameRate` is the total time that pools may use per frame.
 			// `workPriority / __totalWorkPriority` is this pool's fraction of that total.
 			// Multiply together to get how much time this pool can spend.
-			endTime += workLoad * workPriority
-				/ (Application.current.window.frameRate * __totalWorkPriority);
+			endTime += workLoad * workPriority / (frameRate * __totalWorkPriority);
 		}
 
 		var jobStartTime:Float;
