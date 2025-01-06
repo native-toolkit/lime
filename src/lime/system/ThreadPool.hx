@@ -365,9 +365,14 @@ class ThreadPool extends WorkOutput
 			throw "Call run() only from the main thread.";
 		}
 
+		if (mode == null)
+		{
+			mode = this.mode;
+		}
+
 		if (doWork == null)
 		{
-			if (__doWork == null)
+			if (__doWork == null #if html5 || mode == MULTI_THREADED #end)
 			{
 				throw "run() requires doWork argument.";
 			}
@@ -384,7 +389,7 @@ class ThreadPool extends WorkOutput
 
 		var job:JobData = new JobData(doWork, state);
 		#if lime_threads
-		if (mode == MULTI_THREADED || mode == null && this.mode == MULTI_THREADED)
+		if (mode == MULTI_THREADED)
 		{
 			__multiThreadedQueue.push(job);
 			__runNextJob();
@@ -846,9 +851,7 @@ private abstract PseudoEvent(ThreadPool) from ThreadPool
 		}
 
 		#if (lime_threads && html5)
-		if (this.mode == MULTI_THREADED) throw "Unsupported operation; instead pass the callback to ThreadPool's constructor.";
-		else
-			this.__doWork = {func: callCallback};
+		this.__doWork = {func: callCallback};
 		#else
 		this.__doWork = callCallback;
 		#end
