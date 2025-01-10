@@ -1514,6 +1514,11 @@ class CommandLineTools
 				target = System.hostPlatform;
 				targetFlags.set("cpp", "");
 
+				if (target == Platform.MAC)
+				{
+					overrides.haxedefs.set("macos", "");
+				}
+
 			case "neko":
 				target = System.hostPlatform;
 				targetFlags.set("neko", "");
