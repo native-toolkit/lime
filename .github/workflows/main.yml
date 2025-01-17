@@ -715,7 +715,7 @@ jobs:
 
       - uses: krdlab/setup-haxe@v1
         with:
-          haxe-version: 4.3.6 # minimum required version for HL/C is 4.3.3
+          haxe-version: 4.3.3 # minimum required version for HL/C is 4.3.3
 
       - name: Set HAXEPATH (Windows)
         if: runner.os == 'Windows'
