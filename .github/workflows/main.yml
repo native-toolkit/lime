@@ -794,6 +794,7 @@ jobs:
           lime build HelloWorld html5 -release -verbose -nocolor
 
       - name: Build HelloWorld variants
+        if: ${{ matrix.haxe-version != '3.4.7' }}
         run: |
           lime build HelloWorld html5 -clean -release -verbose -nocolor --haxelib=genes
           lime build HelloWorld html5 -clean -release -verbose -nocolor -minify -terser
@@ -804,6 +805,7 @@ jobs:
           lime build SimpleImage html5 -release -verbose -nocolor
 
       - name: Build SimpleImage variants
+        if: ${{ matrix.haxe-version != '3.4.7' }}
         run: |
           lime build SimpleImage html5 -clean -release -verbose -nocolor --haxelib=genes
           lime build SimpleImage html5 -clean -release -verbose -nocolor -minify -terser
@@ -814,6 +816,7 @@ jobs:
           lime build SimpleAudio html5 -release -verbose -nocolor
 
       - name: Build SimpleAudio variants
+        if: ${{ matrix.haxe-version != '3.4.7' }}
         run: |
           lime build SimpleAudio html5 -clean -release -verbose -nocolor --haxelib=genes
           lime build SimpleAudio html5 -clean -release -verbose -nocolor -minify -terser
