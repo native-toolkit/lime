@@ -383,7 +383,7 @@ class WindowsPlatform extends PlatformTarget
 						var visualStudioPath = StringTools.trim(vswhereOutput);
 						var vcvarsallPath = visualStudioPath + "\\VC\\Auxiliary\\Build\\vcvarsall.bat";
 						// this command sets up the environment variables and things that visual studio requires
-						var vcvarsallCommand = [vcvarsallPath, "x64"].map(arg -> ~/([&|\(\)<>\^ ])/g.replace(arg, "^$1"));
+						var vcvarsallCommand = [vcvarsallPath, "x64"].map(function(arg:String):String { return ~/([&|\(\)<>\^ ])/g.replace(arg, "^$1"); });
 						// this command runs the cl.exe c compiler from visual studio
 						var clCommand = ["cl.exe", "/Ox", "/Fe:" + executablePath, "-I", Path.combine(targetDirectory, "obj"), Path.combine(targetDirectory, "obj/ApplicationMain.c")];
 						for (file in System.readDirectory(applicationDirectory))
@@ -398,7 +398,7 @@ class WindowsPlatform extends PlatformTarget
 						}
 						clCommand.push("/link");
 						clCommand.push("/subsystem:windows");
-						clCommand = clCommand.map(arg -> ~/([&|\(\)<>\^ ])/g.replace(arg, "^$1"));
+						clCommand = clCommand.map(function(arg:String):String { return ~/([&|\(\)<>\^ ])/g.replace(arg, "^$1"); });
 						// combine both commands into one
 						command = ["cmd.exe", "/s", "/c", vcvarsallCommand.join(" ") + " && " + clCommand.join(" ")];
 					}
