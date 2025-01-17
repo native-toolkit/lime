@@ -756,6 +756,7 @@ jobs:
           lime build SimpleAudio hlc -release -verbose -nocolor
 
   html5-samples:
+    needs: package-haxelib
     runs-on: ubuntu-20.04
     strategy:
       matrix:
@@ -774,45 +775,48 @@ jobs:
 
       - name: Install Haxe dependencies
         run: |
-          haxelib install format --quiet
-          haxelib install hxp --quiet
           haxelib install genes --quiet
           haxelib git lime-samples https://github.com/openfl/lime-samples --quiet
 
+      - uses: actions/download-artifact@v4
+        with:
+          name: lime-haxelib
+          path: lime-haxelib
+
       - name: Prepare Lime
         run: |
-          haxelib dev lime ${{ github.workspace }}
-          haxelib run lime setup -alias -y -nocffi -eval
+          haxelib dev lime lime-haxelib
+          haxelib run lime setup -alias -y -nocffi
 
       - name: Build HelloWorld sample
         run: |
-          lime create HelloWorld -verbose -nocolor -eval
-          lime build HelloWorld html5 -release -verbose -nocolor -eval
+          lime create HelloWorld -verbose -nocolor
+          lime build HelloWorld html5 -release -verbose -nocolor
 
       - name: Build HelloWorld variants
         run: |
-          lime build HelloWorld html5 -clean -release -verbose -nocolor --haxelib=genes -eval
-          lime build HelloWorld html5 -clean -release -verbose -nocolor -minify -terser -eval
+          lime build HelloWorld html5 -clean -release -verbose -nocolor --haxelib=genes
+          lime build HelloWorld html5 -clean -release -verbose -nocolor -minify -terser
 
       - name: Build SimpleImage sample
         run: |
-          lime create SimpleImage -verbose -nocolor -eval
-          lime build SimpleImage html5 -release -verbose -nocolor -eval
+          lime create SimpleImage -verbose -nocolor
+          lime build SimpleImage html5 -release -verbose -nocolor
 
       - name: Build SimpleImage variants
         run: |
-          lime build SimpleImage html5 -clean -release -verbose -nocolor --haxelib=genes -eval
-          lime build SimpleImage html5 -clean -release -verbose -nocolor -minify -terser -eval
+          lime build SimpleImage html5 -clean -release -verbose -nocolor --haxelib=genes
+          lime build SimpleImage html5 -clean -release -verbose -nocolor -minify -terser
 
       - name: Build SimpleAudio sample
         run: |
-          lime create SimpleAudio -verbose -nocolor -eval
-          lime build SimpleAudio html5 -release -verbose -nocolor -eval
+          lime create SimpleAudio -verbose -nocolor
+          lime build SimpleAudio html5 -release -verbose -nocolor
 
       - name: Build SimpleAudio variants
         run: |
-          lime build SimpleAudio html5 -clean -release -verbose -nocolor --haxelib=genes -eval
-          lime build SimpleAudio html5 -clean -release -verbose -nocolor -minify -terser -eval
+          lime build SimpleAudio html5 -clean -release -verbose -nocolor --haxelib=genes
+          lime build SimpleAudio html5 -clean -release -verbose -nocolor -minify -terser
 
   neko-samples:
     needs: package-haxelib
