@@ -5,17 +5,9 @@ endif
 
 HAXE_BUILDS := $(ARCHS:%=build-haxe-%)
 
-ifeq ("$(ACTION)","clean")
-default: clean
-else
-default: $(HAXE_BUILDS)
-endif
-
 ifeq ("$(CONFIGURATION)","Debug")
    BUILD_STYLE := Debug
 endif
-
-default: debug_print
 
 ifeq ("$(BUILD_STYLE)","Debug")
    DEBUG := -debug
@@ -31,11 +23,18 @@ ifeq ("$(HAXE_OS)","appletvsimulator")
 endif
 CONFIG := $(CONFIG)-$(HAXE_OS)
 
+LIB_DEST := $(DEBUG)/libApplicationMain.a
+
+ifeq ("$(ACTION)","clean")
+default: clean
+else
+default: $(HAXE_BUILDS)
+endif
+
+default: debug_print
+
 debug_print:
 	@echo "Make $(HAXE_BUILDS)"
-
-LIB_BASE := build/$(CONFIG)/::CPP_LIBPREFIX::ApplicationMain$(DEBUG)
-LIB_DEST := $(DEBUG)/libApplicationMain.a
 
 build-haxe-x86_64:
 	@echo "Haxe simulator build: $(CONFIG)-64"
@@ -53,3 +52,6 @@ build-haxe-arm64:
 
 clean:
 	rm -rf build
+
+.PHONY: default debug_print clean $(HAXE_BUILDS)
+.SUFFIXES:
