@@ -816,11 +816,6 @@ class PlatformSetup
 			setupHaxelib(new Haxelib("lime"));
 		}
 
-		if (System.hostPlatform == MAC)
-		{
-			ConfigHelper.writeConfigValue("MAC_USE_CURRENT_SDK", "1");
-		}
-
 		if (targetFlags.exists("noalias"))
 		{
 			return;
@@ -1077,11 +1072,6 @@ class PlatformSetup
 		if (!targetFlags.exists("alias") && !targetFlags.exists("cli"))
 		{
 			setupHaxelib(new Haxelib("openfl"));
-		}
-
-		if (System.hostPlatform == MAC)
-		{
-			ConfigHelper.writeConfigValue("MAC_USE_CURRENT_SDK", "1");
 		}
 
 		if (targetFlags.exists("noalias"))
