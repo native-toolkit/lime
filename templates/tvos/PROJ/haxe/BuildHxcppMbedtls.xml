@@ -1,0 +1,12 @@
+<xml>
+
+	<include name="${HXCPP}/build-tool/BuildCommon.xml" />
+	<include name="${HXCPP}/src/hx/libs/ssl/Build.xml" />
+
+	<target id="default" output="libmbedtls_hxcpp${DBG}" tool="linker" toolid="static_link">
+
+		<files id="hxcpp_ssl" />
+
+	</target>
+
+</xml>
