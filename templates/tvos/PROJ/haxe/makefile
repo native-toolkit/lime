@@ -47,8 +47,9 @@ debug_print:
 $(HAXE_BUILDS): build-haxe-%:
 	@echo "Haxe $(if $(filter $*,$(SIMULATOR_ARCH)),simulator,device) build: $(CONFIG)$(SUFFIX_$*)"
 	haxe Build.hxml $(HXCPP_FLAGS_$*) -cpp build/$(CONFIG)$(SUFFIX_$*) $(DEBUG)
-	cd build/$(CONFIG)$(SUFFIX_$*); ::HAXELIB_PATH:: export HXCPP_NO_COLOR=1; haxelib run ::CPP_BUILD_LIBRARY:: Build.xml $(DEBUG) -options Options.txt
-	cp build/$(CONFIG)$(SUFFIX_$*)/::CPP_LIBPREFIX::ApplicationMain$(DEBUG).appletv$(if $(filter $*,$(SIMULATOR_ARCH)),sim,os)$(SUFFIX_$*).a ../lib/$*$(LIB_DEST)
+	cd build/$(CONFIG)$(SUFFIX_$*); ::HAXELIB_PATH:: export HXCPP_NO_COLOR=1; \
+		haxelib run ::CPP_BUILD_LIBRARY:: Build.xml haxe -Ddestination=$(CURDIR)/../lib/$*$(LIB_DEST) \
+		-options Options.txt $(DEBUG)
 	touch ../Classes/Main.mm
 
 clean:
