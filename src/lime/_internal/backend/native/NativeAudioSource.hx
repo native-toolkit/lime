@@ -588,4 +588,13 @@ class NativeAudioSource
 
 		return position;
 	}
+
+	public function getLatency():Float
+	{
+		var offsets = AL.getSourcedvSOFT(handle, AL.SEC_OFFSET_LATENCY_SOFT, 2);
+		if (offsets != null)
+			return offsets[1] * 1000;
+
+		return 0;
+	}
 }

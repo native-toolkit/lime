@@ -1,5 +1,6 @@
 package lime._internal.backend.html5;
 
+import lime.media.AudioManager;
 import lime.math.Vector4;
 import lime.media.AudioSource;
 
@@ -218,10 +219,10 @@ class HTML5AudioSource
 		#if lime_howlerjs
 		parent.buffer.__srcHowl.rate(value);
 		#end
-		
+
 		return getPitch();
 	}
-	
+
 
 	public function getPosition():Vector4
 	{
@@ -251,5 +252,19 @@ class HTML5AudioSource
 		#end
 
 		return position;
+	}
+
+	public function getLatency():Float
+	{
+		var ctx = AudioManager.context.web;
+		if (ctx != null)
+		{
+			var baseLatency:Float = untyped ctx.baseLatency != null ? untyped ctx.baseLatency : 0;
+			var outputLatency:Float = untyped ctx.outputLatency != null ? untyped ctx.outputLatency : 0;
+
+			return (baseLatency + outputLatency) * 1000;
+		}
+
+		return 0;
 	}
 }

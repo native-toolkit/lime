@@ -391,6 +391,11 @@ class OpenALAudioContext
 		return AL.getSourcefv(source, param);
 	}
 
+	public function getSourcedvSOFT(source:ALSource, param:Int, count:Int = 1):Array<Float>
+	{
+		return AL.getSourcedvSOFT(source, param);
+	}
+
 	public function getSourcei(source:ALSource, param:Int):Dynamic
 	{
 		return AL.getSourcei(source, param);
