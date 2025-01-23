@@ -262,6 +262,8 @@ class TVOSPlatform extends PlatformTarget
 		context.IOS_COMPILER = project.config.getString("tvos.compiler", "clang");
 		context.CPP_BUILD_LIBRARY = project.config.getString("cpp.buildLibrary", "hxcpp");
 
+		context.CPP_CACHE_WORKAROUND = "unset HXCPP_COMPILE_CACHE;";
+
 		context.IOS_LINKER_FLAGS = ["-stdlib=libc++"].concat(project.config.getArrayString("tvos.linker-flags"));
 		context.IOS_NON_EXEMPT_ENCRYPTION = project.config.getBool("tvos.non-exempt-encryption", true);
 
