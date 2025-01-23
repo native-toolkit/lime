@@ -79,6 +79,7 @@
 		<file name="${NATIVE_TOOLKIT_PATH}/freetype/src/base/ftbitmap.c" />
 		<file name="${NATIVE_TOOLKIT_PATH}/freetype/src/base/ftcalc.c" />
 		<file name="${NATIVE_TOOLKIT_PATH}/freetype/src/base/ftcid.c" />
+		<file name="${NATIVE_TOOLKIT_PATH}/freetype/src/base/ftcolor.c" />
 		<file name="${NATIVE_TOOLKIT_PATH}/freetype/src/base/ftdbgmem.c" />
 		<file name="${NATIVE_TOOLKIT_PATH}/freetype/src/base/ftdebug.c" />
 		<file name="${NATIVE_TOOLKIT_PATH}/freetype/src/base/ftfntfmt.c" />
