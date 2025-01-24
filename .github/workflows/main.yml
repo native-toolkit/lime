@@ -486,10 +486,10 @@ jobs:
           name: MacArm64-NDLL
           path: ndll/MacArm64/
 
-      # - uses: actions/download-artifact@v4
-      #   with:
-      #     name: Windows-NDLL
-      #     path: ndll/Windows/
+      - uses: actions/download-artifact@v4
+        with:
+          name: Windows-NDLL
+          path: ndll/Windows/
 
       - uses: actions/download-artifact@v4
         with:
