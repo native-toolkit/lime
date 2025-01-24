@@ -84,7 +84,7 @@ class AndroidPlatform extends PlatformTarget
 
 		if (project.targetFlags.exists("simulator") || project.targetFlags.exists("emulator"))
 		{
-			defaults.architectures = [Architecture.X64];
+			defaults.architectures = [Architecture.X64, Architecture.ARM64];
 		}
 		else
 		{
