@@ -642,24 +642,20 @@ class TVOSPlatform extends PlatformTarget
 
 		for (asset in project.assets)
 		{
-			if (asset.type != AssetType.TEMPLATE)
+			if (asset.embed != true)
 			{
-				var targetPath = Path.combine(projectDirectory + "/assets/", asset.resourceName);
-
-				// var sourceAssetPath:String = projectDirectory + "haxe/" + asset.sourcePath;
-
-				System.mkdir(Path.directory(targetPath));
-				AssetHelper.copyAssetIfNewer(asset, targetPath);
-
-				// System.mkdir (Path.directory (sourceAssetPath));
-				// System.linkFile (flatAssetPath, sourceAssetPath, true, true);
-			}
-			else
-			{
-				var targetPath = Path.combine(projectDirectory, asset.targetPath);
-
-				System.mkdir(Path.directory(targetPath));
-				AssetHelper.copyAsset(asset, targetPath, context);
+				if (asset.type != AssetType.TEMPLATE)
+				{
+					var targetPath = Path.combine(projectDirectory + "/assets/", asset.resourceName);
+					System.mkdir(Path.directory(targetPath));
+					AssetHelper.copyAssetIfNewer(asset, targetPath);
+				}
+				else
+				{
+					var targetPath = Path.combine(projectDirectory, asset.targetPath);
+					System.mkdir(Path.directory(targetPath));
+					AssetHelper.copyAsset(asset, targetPath, context);
+				}
 			}
 		}
 
