@@ -186,6 +186,8 @@ class NativeApplication
 	{
 		#if (!macro && lime_cffi)
 		return cast NativeCFFI.lime_system_get_device_orientation();
+		#else
+		return UNKNOWN;
 		#end
 	}
 
