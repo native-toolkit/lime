@@ -661,6 +661,20 @@ class Application extends Module
 	{
 		#if (lime_cffi && !macro)
 		return cast NativeCFFI.lime_system_get_device_orientation();
+		#elseif air
+		switch (__window.stage.deviceOrientation)
+		{
+			case DEFAULT:
+				return PORTRAIT;
+			case UPSIDE_DOWN:
+				return PORTRAIT_FLIPPED;
+			case ROTATED_LEFT:
+				return LANDSCAPE;
+			case ROTATED_RIGHT:
+				return LANDSCAPE_FLIPPED;
+			default:
+				return UNKNOWN;
+		}
 		#elseif (js && html5)
 		if (Browser.window.screen.orientation != null)
 		{
