@@ -182,6 +182,13 @@ class NativeApplication
 		#end
 	}
 
+	public function getDeviceOrientation():Orientation
+	{
+		#if (!macro && lime_cffi)
+		return cast NativeCFFI.lime_system_get_device_orientation();
+		#end
+	}
+
 	private function handleApplicationEvent():Void
 	{
 		switch (applicationEventInfo.type)

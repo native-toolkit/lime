@@ -16,10 +16,6 @@ import lime.ui.Touch;
 import lime.ui.Window;
 import lime.ui.WindowAttributes;
 import lime.utils.Preloader;
-import lime._internal.backend.native.NativeCFFI;
-#if (js && html5)
-import js.Browser;
-#end
 
 /**
 	The Application class forms the foundation for most Lime projects.
@@ -32,7 +28,6 @@ import js.Browser;
 @:noDebug
 #end
 @:access(lime.ui.Window)
-@:access(lime._internal.backend.native.NativeCFFI)
 class Application extends Module
 {
 	/**
@@ -659,41 +654,7 @@ class Application extends Module
 
 	@:noCompletion private function get_deviceOrientation():Orientation
 	{
-		#if (lime_cffi && !macro)
-		return cast NativeCFFI.lime_system_get_device_orientation();
-		#elseif air
-		switch (__window.stage.deviceOrientation)
-		{
-			case DEFAULT:
-				return PORTRAIT;
-			case UPSIDE_DOWN:
-				return PORTRAIT_FLIPPED;
-			case ROTATED_LEFT:
-				return LANDSCAPE;
-			case ROTATED_RIGHT:
-				return LANDSCAPE_FLIPPED;
-			default:
-				return UNKNOWN;
-		}
-		#elseif (js && html5)
-		if (Browser.window.screen.orientation != null)
-		{
-			switch (Browser.window.screen.orientation.type)
-			{
-				case PORTRAIT_PRIMARY:
-					return PORTRAIT;
-				case PORTRAIT_SECONDARY:
-					return PORTRAIT_FLIPPED;
-				case LANDSCAPE_PRIMARY:
-					return LANDSCAPE;
-				case LANDSCAPE_SECONDARY:
-					return LANDSCAPE_FLIPPED;
-				default:
-					return UNKNOWN;
-			}
-		}
-		#end
-		return UNKNOWN;
+		return __backend.getDeviceOrientation();
 	}
 }
 
