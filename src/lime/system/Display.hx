@@ -28,7 +28,7 @@ class Display
 	/**
 	 * Orientation of the display
 	 */
-	public var orientation(default, null):Int;
+	public var orientation(default, null):Orientation;
 
 	/**
 	 * The name of the device, such as "Samsung SyncMaster P2350", "iPhone 6", "Oculus Rift DK2", etc.
