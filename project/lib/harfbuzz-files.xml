@@ -34,6 +34,7 @@
 		<file name="${NATIVE_TOOLKIT_PATH}/harfbuzz/src/hb-directwrite.cc" if="windows HXCPP_M64" />
 		<file name="${NATIVE_TOOLKIT_PATH}/harfbuzz/src/hb-draw.cc" />
 		<file name="${NATIVE_TOOLKIT_PATH}/harfbuzz/src/hb-face.cc" />
+		<file name="${NATIVE_TOOLKIT_PATH}/harfbuzz/src/hb-face-builder.cc" />
 		<file name="${NATIVE_TOOLKIT_PATH}/harfbuzz/src/hb-fallback-shape.cc" />
 		<file name="${NATIVE_TOOLKIT_PATH}/harfbuzz/src/hb-font.cc" />
 		<file name="${NATIVE_TOOLKIT_PATH}/harfbuzz/src/hb-ft.cc" />
