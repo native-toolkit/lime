@@ -606,7 +606,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        haxe-version: [4.0.5, 4.1.5, 4.2.5, 4.3.1]
+        haxe-version: [4.0.5, 4.1.5, 4.2.5, 4.3.6]
     steps:
 
       - uses: actions/checkout@v4
@@ -715,7 +715,7 @@ jobs:
 
       - uses: krdlab/setup-haxe@v1
         with:
-          haxe-version: 4.3.3 # minimum required version for HL/C
+          haxe-version: 4.3.3 # minimum required version for HL/C is 4.3.3
 
       - name: Set HAXEPATH (Windows)
         if: runner.os == 'Windows'
@@ -756,14 +756,18 @@ jobs:
           lime build SimpleAudio hlc -release -verbose -nocolor
 
   html5-samples:
+    needs: package-haxelib
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        haxe-version: [3.4.7, 4.0.5, 4.1.5, 4.2.5, 4.3.6]
     steps:
 
       - uses: actions/checkout@v4
 
       - uses: krdlab/setup-haxe@v1
         with:
-          haxe-version: ${{ env.HAXE_VERSION }}
+          haxe-version: ${{ matrix.haxe-version }}
 
       - name: Set HAXEPATH
         run: |
@@ -771,45 +775,51 @@ jobs:
 
       - name: Install Haxe dependencies
         run: |
-          haxelib install format --quiet
-          haxelib install hxp --quiet
           haxelib install genes --quiet
           haxelib git lime-samples https://github.com/openfl/lime-samples --quiet
 
+      - uses: actions/download-artifact@v4
+        with:
+          name: lime-haxelib
+          path: lime-haxelib
+
       - name: Prepare Lime
         run: |
-          haxelib dev lime ${{ github.workspace }}
-          haxelib run lime setup -alias -y -nocffi -eval
+          haxelib dev lime lime-haxelib
+          haxelib run lime setup -alias -y -nocffi
 
       - name: Build HelloWorld sample
         run: |
-          lime create HelloWorld -verbose -nocolor -eval
-          lime build HelloWorld html5 -release -verbose -nocolor -eval
+          lime create HelloWorld -verbose -nocolor
+          lime build HelloWorld html5 -release -verbose -nocolor
 
       - name: Build HelloWorld variants
+        if: ${{ matrix.haxe-version != '3.4.7' }}
         run: |
-          lime build HelloWorld html5 -clean -release -verbose -nocolor --haxelib=genes -eval
-          lime build HelloWorld html5 -clean -release -verbose -nocolor -minify -terser -eval
+          lime build HelloWorld html5 -clean -release -verbose -nocolor --haxelib=genes
+          lime build HelloWorld html5 -clean -release -verbose -nocolor -minify -terser
 
       - name: Build SimpleImage sample
         run: |
-          lime create SimpleImage -verbose -nocolor -eval
-          lime build SimpleImage html5 -release -verbose -nocolor -eval
+          lime create SimpleImage -verbose -nocolor
+          lime build SimpleImage html5 -release -verbose -nocolor
 
       - name: Build SimpleImage variants
+        if: ${{ matrix.haxe-version != '3.4.7' }}
         run: |
-          lime build SimpleImage html5 -clean -release -verbose -nocolor --haxelib=genes -eval
-          lime build SimpleImage html5 -clean -release -verbose -nocolor -minify -terser -eval
+          lime build SimpleImage html5 -clean -release -verbose -nocolor --haxelib=genes
+          lime build SimpleImage html5 -clean -release -verbose -nocolor -minify -terser
 
       - name: Build SimpleAudio sample
         run: |
-          lime create SimpleAudio -verbose -nocolor -eval
-          lime build SimpleAudio html5 -release -verbose -nocolor -eval
+          lime create SimpleAudio -verbose -nocolor
+          lime build SimpleAudio html5 -release -verbose -nocolor
 
       - name: Build SimpleAudio variants
+        if: ${{ matrix.haxe-version != '3.4.7' }}
         run: |
-          lime build SimpleAudio html5 -clean -release -verbose -nocolor --haxelib=genes -eval
-          lime build SimpleAudio html5 -clean -release -verbose -nocolor -minify -terser -eval
+          lime build SimpleAudio html5 -clean -release -verbose -nocolor --haxelib=genes
+          lime build SimpleAudio html5 -clean -release -verbose -nocolor -minify -terser
 
   neko-samples:
     needs: package-haxelib
