@@ -17,6 +17,9 @@ import lime.ui.Window;
 import lime.ui.WindowAttributes;
 import lime.utils.Preloader;
 import lime._internal.backend.native.NativeCFFI;
+#if (js && html5)
+import js.Browser;
+#end
 
 /**
 	The Application class forms the foundation for most Lime projects.
@@ -658,9 +661,25 @@ class Application extends Module
 	{
 		#if (lime_cffi && !macro)
 		return cast NativeCFFI.lime_system_get_device_orientation();
-		#else
-		return UNKNOWN;
+		#elseif (js && html5)
+		if (Browser.window.screen.orientation != null)
+		{
+			switch (Browser.window.screen.orientation.type)
+			{
+				case PORTRAIT_PRIMARY:
+					return PORTRAIT;
+				case PORTRAIT_SECONDARY:
+					return PORTRAIT_FLIPPED;
+				case LANDSCAPE_PRIMARY:
+					return LANDSCAPE;
+				case LANDSCAPE_SECONDARY:
+					return LANDSCAPE_FLIPPED;
+				default:
+					return UNKNOWN;
+			}
+		}
 		#end
+		return UNKNOWN;
 	}
 }
 
