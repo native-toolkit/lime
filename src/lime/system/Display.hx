@@ -40,5 +40,12 @@ class Display
 	**/
 	public var supportedModes(default, null):Array<DisplayMode>;
 
+	/**
+		The area within the display's `bounds` where it is safe to render
+		content without being obscured by notches, holes, or other display
+		cutouts.
+	**/
+	public var safeArea(default, null):Rectangle;
+
 	@:noCompletion private function new() {}
 }

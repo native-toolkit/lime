@@ -11,12 +11,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.view.DisplayCutout;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.OrientationEventListener;
 import android.view.View;
+import android.view.WindowInsets;
 import android.webkit.MimeTypeMap;
 import android.Manifest;
 import org.haxe.extension.Extension;
@@ -33,6 +35,7 @@ public class GameActivity extends SDLActivity {
 	private static AssetManager assetManager;
 	private static List<Extension> extensions;
 	private static DisplayMetrics metrics;
+	private static DisplayCutout displayCutout;
 	private static Vibrator vibrator;
 	private static OrientationEventListener orientationListener;
 	private static HaxeObject deviceOrientationListener;
@@ -59,6 +62,37 @@ public class GameActivity extends SDLActivity {
 		}
 
 		return metrics.xdpi;
+
+	}
+
+	public static int[] getDisplaySafeAreaInsets () {
+
+		if (displayCutout == null) {
+
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+
+				WindowInsets windowInsets = ((GameActivity)Extension.mainContext).getWindow().getDecorView().getRootWindowInsets();
+
+				if (windowInsets != null) {
+
+					displayCutout = windowInsets.getDisplayCutout();
+
+				}
+			}
+		}
+
+		int[] result = {0, 0, 0, 0};
+
+		if (displayCutout != null) {
+
+			result[0] = displayCutout.getSafeInsetLeft();
+			result[1] = displayCutout.getSafeInsetTop();
+			result[2] = displayCutout.getSafeInsetRight();
+			result[3] = displayCutout.getSafeInsetBottom();
+
+		}
+
+		return result;
 
 	}
 

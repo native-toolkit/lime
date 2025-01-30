@@ -1,6 +1,7 @@
 #include <graphics/PixelFormat.h>
 #include <math/Rectangle.h>
 #include <system/Clipboard.h>
+#include <system/Display.h>
 #include <system/DisplayMode.h>
 #include <system/JNI.h>
 #include <system/System.h>
@@ -57,6 +58,7 @@ namespace lime {
 	static int id_refreshRate;
 	static int id_supportedModes;
 	static int id_width;
+	static int id_safeArea;
 	static bool init = false;
 
 
@@ -312,6 +314,7 @@ namespace lime {
 				id_refreshRate = val_id ("refreshRate");
 				id_supportedModes = val_id ("supportedModes");
 				id_width = val_id ("width");
+				id_safeArea = val_id ("safeArea");
 				init = true;
 
 			}
@@ -330,6 +333,14 @@ namespace lime {
 			SDL_Rect bounds = { 0, 0, 0, 0 };
 			SDL_GetDisplayBounds (id, &bounds);
 			alloc_field (display, id_bounds, Rectangle (bounds.x, bounds.y, bounds.w, bounds.h).Value ());
+
+			Rectangle safeAreaInsets;
+			Display::GetSafeAreaInsets(id, &safeAreaInsets);
+			alloc_field (display, id_safeArea,
+				Rectangle (bounds.x + safeAreaInsets.x,
+					bounds.y + safeAreaInsets.y,
+					bounds.w - safeAreaInsets.x - safeAreaInsets.width,
+					bounds.h - safeAreaInsets.y - safeAreaInsets.height).Value ());
 
 			float dpi = 72.0;
 			#ifndef EMSCRIPTEN
@@ -421,6 +432,7 @@ namespace lime {
 			const int id_refreshRate = hl_hash_utf8 ("refreshRate");
 			const int id_supportedModes = hl_hash_utf8 ("supportedModes");
 			const int id_width = hl_hash_utf8 ("width");
+			const int id_safeArea = hl_hash_utf8 ("safeArea");
 			const int id_x = hl_hash_utf8 ("x");
 			const int id_y = hl_hash_utf8 ("y");
 
@@ -449,6 +461,16 @@ namespace lime {
 			hl_dyn_seti (_bounds, id_height, &hlt_i32, bounds.h);
 
 			hl_dyn_setp (display, id_bounds, &hlt_dynobj, _bounds);
+
+			Rectangle safeAreaInsets;
+			Display::GetSafeAreaInsets(id, &safeAreaInsets);
+			vdynamic* _safeArea = (vdynamic*)hl_alloc_dynobj ();
+			hl_dyn_seti (_safeArea, id_x, &hlt_i32, bounds.x + safeAreaInsets.x);
+			hl_dyn_seti (_safeArea, id_y, &hlt_i32, bounds.y + safeAreaInsets.y);
+			hl_dyn_seti (_safeArea, id_width, &hlt_i32, bounds.w - safeAreaInsets.x - safeAreaInsets.width);
+			hl_dyn_seti (_safeArea, id_height, &hlt_i32, bounds.h - safeAreaInsets.y - safeAreaInsets.height);
+
+			hl_dyn_setp (display, id_safeArea, &hlt_dynobj, _safeArea);
 
 			float dpi = 72.0;
 			#ifndef EMSCRIPTEN
