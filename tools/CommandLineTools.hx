@@ -497,17 +497,17 @@ class CommandLineTools
 			case LINUX:
 				var arguments = Sys.args();
 
-				if (System.hostArchitecture == ARMV7 )
+				if (System.hostArchitecture == X64)
 				{
-					untyped $loader.path = $array(path + "LinuxArm/", $loader.path);
+					untyped $loader.path = $array(path + "Linux64/", $loader.path);
 				}
 				else if (System.hostArchitecture == ARM64)
 				{
 					untyped $loader.path = $array(path + "LinuxArm64/", $loader.path);
 				}
-				else if (System.hostArchitecture == X64)
+				else if (System.hostArchitecture == ARMV7)
 				{
-					untyped $loader.path = $array(path + "Linux64/", $loader.path);
+					untyped $loader.path = $array(path + "LinuxArm/", $loader.path);
 				}
 				else
 				{

@@ -92,6 +92,89 @@ jobs:
           lime create SimpleAudio -verbose -nocolor
           lime build SimpleAudio linux -release -verbose -nocolor
 
+  linuxarm64:
+    runs-on: ubuntu-20.04
+    steps:
+
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-dev libglu1-mesa-dev gcc-aarch64-linux-gnu g++-aarch64-linux-gnu libdrm-dev libegl1-mesa-dev libgles2-mesa-dev libasound2-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev libpulse-dev libmbedtls-dev libpng-dev libturbojpeg-dev libuv1-dev libvorbis-dev
+          wget -q http://mirrors.ocf.berkeley.edu/ubuntu-ports/pool/main/libd/libdrm/libdrm2_2.4.101-2_arm64.deb
+          sudo dpkg-deb -x libdrm2_2.4.101-2_arm64.deb /
+          wget -q http://mirrors.ocf.berkeley.edu/ubuntu-ports/pool/main/libd/libdrm/libdrm-dev_2.4.101-2_arm64.deb
+          sudo dpkg-deb -x libdrm-dev_2.4.101-2_arm64.deb /
+          wget -q http://mirrors.ocf.berkeley.edu/ubuntu-ports/pool/main/libg/libglvnd/libegl1_1.3.1-1_arm64.deb
+          sudo dpkg-deb -x libegl1_1.3.1-1_arm64.deb /
+          wget -q http://mirrors.ocf.berkeley.edu/ubuntu-ports/pool/main/libg/libglvnd/libegl-dev_1.3.1-1_arm64.deb
+          sudo dpkg-deb -x libegl-dev_1.3.1-1_arm64.deb /
+          wget -q http://mirrors.ocf.berkeley.edu/ubuntu-ports/pool/main/libg/libglvnd/libgles2_1.3.1-1_arm64.deb
+          sudo dpkg-deb -x libgles2_1.3.1-1_arm64.deb /
+          wget -q http://mirrors.ocf.berkeley.edu/ubuntu-ports/pool/main/libg/libglvnd/libgles-dev_1.3.1-1_arm64.deb
+          sudo dpkg-deb -x libgles-dev_1.3.1-1_arm64.deb /
+
+      - uses: krdlab/setup-haxe@v1
+        with:
+          haxe-version: ${{ env.HAXE_VERSION }}
+
+      - name: Set HAXEPATH
+        run: |
+          echo "HAXEPATH=$HAXE_STD_PATH/.." >> $GITHUB_ENV
+
+      - name: Install Haxe dependencies
+        run: |
+          # TODO: change this to release version when hxcpp releases the patch
+          haxelib git hxcpp https://github.com/mcagabe19/hxcpp 47526979c193c6659d053018fb178366b6ff6f72 --quiet
+          haxelib install format --quiet
+          haxelib install hxp --quiet
+
+      - name: Enable HXCPP compile cache
+        run: |
+          echo "HXCPP_COMPILE_CACHE=~/.hxcpp" >> $GITHUB_ENV
+
+      - name: Rebuild Lime tools
+        run: |
+          haxelib dev lime ${{ github.workspace }}
+          haxelib run lime rebuild tools -nocolor -verbose -nocffi
+          haxelib run lime setup -alias -y -nocffi
+          lime rebuild hxcpp -nocolor -verbose -nocffi
+
+      - name: Rebuild Lime (Linux)
+        run: |
+          lime rebuild linux -64 -release -nocolor -verbose -nocffi
+          CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ HXCPP_STRIP=aarch64-linux-gnu-strip lime rebuild linux -arm64 -release -nocolor -verbose -nocffi -D HXCPP_ARM64
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: LinuxArm64-NDLL
+          path: |
+            ndll/LinuxArm64/
+            !**/.gitignore
+          if-no-files-found: error
+
+      - name: Install samples
+        run: |
+          haxelib git lime-samples https://github.com/openfl/lime-samples --quiet
+
+      - name: Build HelloWorld sample
+        run: |
+          lime create HelloWorld -verbose -nocolor
+          lime build HelloWorld linux -arm64 -release -verbose -nocolor -D HXCPP_ARM64
+
+      - name: Build SimpleImage sample
+        run: |
+          lime create SimpleImage -verbose -nocolor
+          lime build SimpleImage linux -arm64 -release -verbose -nocolor -D HXCPP_ARM64
+
+      - name: Build SimpleAudio sample
+        run: |
+          lime create SimpleAudio -verbose -nocolor
+          lime build SimpleAudio linux -arm64 -release -verbose -nocolor -D HXCPP_ARM64
+
   macos:
     runs-on: macos-13
     steps:
@@ -196,6 +279,10 @@ jobs:
         with:
           haxe-version: ${{ env.HAXE_VERSION }}
 
+      - uses: TheMrMilchmann/setup-msvc-dev@v3
+        with:
+          arch: amd64_arm64
+
       - name: Set HAXEPATH
         run: |
           echo "HAXEPATH=$Env:HAXE_STD_PATH\.." >> $Env:GITHUB_ENV
@@ -221,6 +308,7 @@ jobs:
         run: |
           lime rebuild windows -32 -release -nocolor -verbose -nocffi
           lime rebuild windows -64 -release -nocolor -verbose -nocffi
+          lime rebuild windows -arm64 -release -nocolor -verbose -nocffi -D HXCPP_ARM64
           lime rebuild hl -clean -release -nocolor -verbose -nocffi
 
       - uses: actions/upload-artifact@v4
@@ -416,7 +504,7 @@ jobs:
           lime build SimpleAudio ios -release -nosign -verbose -nocolor -eval
 
   package-haxelib:
-    needs: [linux, macos, windows, android, ios]
+    needs: [linux, linuxarm64, macos, windows, android, ios]
     runs-on: ubuntu-20.04
     steps:
 
@@ -874,7 +962,7 @@ jobs:
 
   notify:
     runs-on: ubuntu-20.04
-    needs: [package-haxelib, docs, android, flash-samples, air-samples, hashlink-samples, html5-samples, ios, linux, macos, neko-samples, windows]
+    needs: [package-haxelib, docs, android, flash-samples, air-samples, hashlink-samples, html5-samples, ios, linux, linuxarm64, macos, neko-samples, windows]
     if: ${{ github.repository == 'openfl/lime' && github.event_name != 'pull_request' }}
     steps:
       - name: Notify Discord

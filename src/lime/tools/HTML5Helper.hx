@@ -60,6 +60,10 @@ class HTML5Helper
 			{
 				suffix += "32";
 			}
+			else if (System.hostArchitecture == ARM64)
+			{
+				suffix += "arm64";
+			}
 			else
 			{
 				suffix += "64";
@@ -107,11 +111,11 @@ class HTML5Helper
 				{
 					suffix += "32";
 				}
-				else if( System.hostArchitecture == ARMV7)
+				else if (System.hostArchitecture == ARMV7)
 				{
 					suffix += "Arm";
 				}
-				else if( System.hostArchitecture == ARM64)
+				else if (System.hostArchitecture == ARM64)
 				{
 					suffix += "Arm64";
 				}
@@ -188,6 +192,10 @@ class HTML5Helper
 						if (System.hostArchitecture == X86)
 						{
 							suffix += "32";
+						}
+						else if (System.hostArchitecture == ARM64)
+						{
+							suffix += "arm64";
 						}
 						else
 						{
