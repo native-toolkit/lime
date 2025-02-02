@@ -361,7 +361,7 @@ class System
 	#end
 
 	/**
-		Opens a file with the suste, default application.
+		Opens a file with the system default application.
 
 		In a web browser, opens a URL with target `_blank`.
 	**/

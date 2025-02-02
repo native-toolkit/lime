@@ -874,7 +874,7 @@ jobs:
 
   notify:
     runs-on: ubuntu-20.04
-    needs: [package-haxelib, docs, android, flash-samples, air-samples, hashlink-samples, html5-samples, ios, linux, macos, neko-samples, windows]
+    needs: [package-haxelib, docs, android, flash-samples, air-samples, hashlink-samples, hashlinkc-samples, html5-samples, ios, linux, macos, neko-samples, windows]
     if: ${{ github.repository == 'openfl/lime' && github.event_name != 'pull_request' }}
     steps:
       - name: Notify Discord
