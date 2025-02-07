@@ -19,6 +19,7 @@ import android.view.KeyEvent;
 import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.WindowInsets;
+import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
 import android.Manifest;
 import org.haxe.extension.Extension;
@@ -209,6 +210,34 @@ public class GameActivity extends SDLActivity {
 		Extension.mainContext = this;
 		Extension.mainView = mLayout;
 		Extension.packageName = getApplicationContext ().getPackageName ();
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+
+			switch ("::ANDROID_DISPLAY_CUTOUT::") {
+
+				case "always":
+					getWindow().getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS;
+					break;
+
+				case "never":
+					getWindow().getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER;
+					break;
+
+				case "shortEdges":
+					getWindow().getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+					break;
+
+				case "default":
+					getWindow().getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT;
+					break;
+
+				default:
+					getWindow().getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT;
+					break;
+
+			}
+
+		}
 
 		if (extensions == null) {
 
