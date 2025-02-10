@@ -35,6 +35,7 @@
 			<lib name="rpcrt4.lib" />
 			<lib name="dwrite.lib" />
 			<lib name="setupapi.lib" />
+			<lib name="crypt32.lib" />
 
 		</section>
 
