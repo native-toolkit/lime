@@ -549,8 +549,8 @@ class WindowsPlatform extends PlatformTarget
 			}
 			else
 			{
-				var haxeArgs = [hxml];
-				var flags = [];
+				var haxeArgs = [hxml, "-D", "resourceFile=ApplicationMain.rc"];
+				var flags = ["-DresourceFile=ApplicationMain.rc"];
 
 				if (is64)
 				{
@@ -679,6 +679,27 @@ class WindowsPlatform extends PlatformTarget
 		}
 		else
 		{
+			if (targetType == "cpp")
+			{
+				if (context.APP_DESCRIPTION == null || context.APP_DESCRIPTION == "")
+				{
+					context.APP_DESCRIPTION = project.meta.title;
+				}
+
+				var versionParts = project.meta.version.split(".");
+
+				if (versionParts.length == 3)
+				{
+					versionParts.push("0");
+				}
+
+				context.FILE_VERSION = versionParts.join(".");
+				context.VERSION_NUMBER = versionParts.join(",");
+
+				// TODO: Implement this properly.
+				context.COPYRIGHT_YEARS = Std.string(Date.now().getFullYear());
+			}
+
 			context.NEKO_FILE = targetDirectory + "/obj/ApplicationMain.n";
 			context.NODE_FILE = targetDirectory + "/bin/ApplicationMain.js";
 			context.HL_FILE = targetDirectory + "/obj/ApplicationMain" + (project.defines.exists("hlc") ? ".c" : ".hl");
@@ -987,9 +1008,14 @@ class WindowsPlatform extends PlatformTarget
 			ProjectHelper.recursiveSmartCopyTemplate(project, "winrt/temp", targetDirectory + "/haxe/temp", context, false, true);
 			ProjectHelper.recursiveSmartCopyTemplate(project, "winrt/scripts", targetDirectory + "/scripts", context, true, true);
 		}
-		else if (targetType == "cpp" && project.targetFlags.exists("static"))
+		else if (targetType == "cpp")
 		{
-			ProjectHelper.recursiveSmartCopyTemplate(project, "cpp/static", targetDirectory + "/obj", context);
+			ProjectHelper.recursiveSmartCopyTemplate(project, "windows/resource", targetDirectory + "/obj", context);
+
+			if (project.targetFlags.exists("static"))
+			{
+				ProjectHelper.recursiveSmartCopyTemplate(project, "cpp/static", targetDirectory + "/obj", context);
+			}
 		}
 
 		/*if (IconHelper.createIcon (project.icons, 32, 32, Path.combine (applicationDirectory, "icon.png"))) {
