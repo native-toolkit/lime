@@ -686,6 +686,11 @@ class WindowsPlatform extends PlatformTarget
 					context.APP_DESCRIPTION = project.meta.title;
 				}
 
+				if (context.APP_COPYRIGHT_YEARS == null || context.APP_COPYRIGHT_YEARS == "")
+				{
+					context.APP_COPYRIGHT_YEARS = Std.string(Date.now().getFullYear());
+				}
+
 				var versionParts = project.meta.version.split(".");
 
 				if (versionParts.length == 3)
@@ -695,9 +700,6 @@ class WindowsPlatform extends PlatformTarget
 
 				context.FILE_VERSION = versionParts.join(".");
 				context.VERSION_NUMBER = versionParts.join(",");
-
-				// TODO: Implement this properly.
-				context.COPYRIGHT_YEARS = Std.string(Date.now().getFullYear());
 			}
 
 			context.NEKO_FILE = targetDirectory + "/obj/ApplicationMain.n";

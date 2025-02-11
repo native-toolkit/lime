@@ -20,7 +20,7 @@ BEGIN
 			VALUE "FileDescription", "::APP_DESCRIPTION::"
 			VALUE "FileVersion", "::FILE_VERSION::"
 			VALUE "InternalName", "::APP_FILE::"
-			VALUE "LegalCopyright", "Copyright (C) ::COPYRIGHT_YEARS:: ::APP_COMPANY::"
+			VALUE "LegalCopyright", "Copyright (C) ::APP_COPYRIGHT_YEARS:: ::APP_COMPANY::"
 			VALUE "OriginalFilename", "::APP_FILE::"
 			VALUE "ProductName", "::APP_PACKAGE::"
 			VALUE "ProductVersion", "::FILE_VERSION::"
