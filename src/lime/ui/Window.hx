@@ -395,6 +395,15 @@ class Window
 		__backend.focus();
 	}
 
+	/**
+	 * Sets the swap interval for the current window.
+	 * @return `false` if the swap interval could not be set
+	**/
+	public function setVSyncMode(mode:WindowVSyncMode):Bool
+	{
+		return __backend.setVSyncMode(mode);
+	}
+
 	public function move(x:Int, y:Int):Void
 	{
 		__backend.move(x, y);

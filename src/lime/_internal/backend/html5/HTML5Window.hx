@@ -381,6 +381,11 @@ class HTML5Window
 
 	public function focus():Void {}
 
+	public function setVSyncMode(mode:WindowVSyncMode):Bool
+	{
+		return false;
+	}
+
 	private function focusTextInput():Void
 	{
 		// Avoid changing focus multiple times per frame.

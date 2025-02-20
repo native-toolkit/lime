@@ -221,11 +221,11 @@ namespace lime {
 
 				if (flags & WINDOW_FLAG_VSYNC) {
 
-					SDL_GL_SetSwapInterval (1);
+					SetVSyncMode (WINDOW_VSYNC_ON);
 
 				} else {
 
-					SDL_GL_SetSwapInterval (0);
+					SetVSyncMode (WINDOW_VSYNC_OFF);
 
 				}
 
@@ -344,6 +344,13 @@ namespace lime {
 			SDL_ShowSimpleMessageBox (SDL_MESSAGEBOX_INFORMATION, title, message, sdlWindow);
 
 		}
+
+	}
+
+
+	bool SDLWindow::SetVSyncMode (WindowVSyncMode mode) {
+
+		return SDL_GL_SetSwapInterval (mode);
 
 	}
 

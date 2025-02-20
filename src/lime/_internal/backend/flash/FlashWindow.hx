@@ -290,6 +290,11 @@ class FlashWindow
 
 	public function focus():Void {}
 
+	public function setVSyncMode(mode:WindowVSyncMode):Bool
+	{
+		return false;
+	}
+
 	public function getCursor():MouseCursor
 	{
 		return cursor;

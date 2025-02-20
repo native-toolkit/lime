@@ -178,6 +178,11 @@ class AIRWindow extends FlashWindow
 		}
 	}
 
+	public function setVSyncMode(mode:WindowVSyncMode):Bool
+	{
+		return false;
+	}
+
 	private function handleNativeWindowEvent(event:Event):Void
 	{
 		switch (event.type)

@@ -1,5 +1,6 @@
 package lime._internal.backend.native;
 
+import lime.ui.WindowVSyncMode;
 import haxe.io.Bytes;
 import lime._internal.backend.native.NativeCFFI;
 import lime.app.Application;
@@ -242,6 +243,18 @@ class NativeWindow
 			NativeCFFI.lime_window_focus(handle);
 			#end
 		}
+	}
+
+	public function setVSyncMode(mode:WindowVSyncMode):Bool
+	{
+		if (handle != null)
+		{
+			#if (!macro && lime_cffi)
+			return NativeCFFI.lime_window_set_vsync_mode(handle, mode);
+			#end
+		}
+
+		return false;
 	}
 
 	public function getCursor():MouseCursor

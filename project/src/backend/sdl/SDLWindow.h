@@ -19,6 +19,7 @@ namespace lime {
 			~SDLWindow ();
 
 			virtual void Alert (const char* message, const char* title);
+			virtual bool SetVSyncMode (WindowVSyncMode mode);
 			virtual void Close ();
 			virtual void ContextFlip ();
 			virtual void* ContextLock (bool useCFFIValue);
