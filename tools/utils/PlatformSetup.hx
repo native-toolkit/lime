@@ -1238,6 +1238,8 @@ class PlatformSetup
 		var message = "Absolute path to a custom version of HashLink.";
 		if (ConfigHelper.getConfigValue("HL_PATH") == null) {
 			message += " Leave empty to use Lime's default bundled version.";
+		} else {
+			message += " Leave empty to keep the currently configured version. To restore Lime's default bundled version, run the command: lime config remove HL_PATH";
 		}
 		getDefineValue("HL_PATH", message);
 		if (System.hostPlatform == MAC)
