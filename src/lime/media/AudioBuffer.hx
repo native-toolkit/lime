@@ -33,10 +33,10 @@ import flash.net.URLRequest;
 #end
 
 /**
-	The `AudioBuffer` class represents a buffer of audio data that can be played back using an `AudioSource`. 
+	The `AudioBuffer` class represents a buffer of audio data that can be played back using an `AudioSource`.
 	It supports a variety of audio formats and platforms, providing a consistent API for loading and managing audio data.
 
-	Depending on the platform, the audio backend may differ, but the class provides a unified interface for accessing 
+	Depending on the platform, the audio backend may differ, but the class provides a unified interface for accessing
 	audio data, whether it's stored in memory, loaded from a file, or streamed.
 
 	@see lime.media.AudioSource
@@ -57,6 +57,11 @@ class AudioBuffer
 		The raw audio data stored as a `UInt8Array`.
 	**/
 	public var data:UInt8Array;
+
+	/**
+		The format the raw audio data is stored in.
+	**/
+	public var dataFormat:AudioBufferDataFormat;
 
 	/**
 		The sample rate of the audio data, in Hz.
@@ -144,6 +149,7 @@ class AudioBuffer
 			audioBuffer.bitsPerSample = data.bitsPerSample;
 			audioBuffer.channels = data.channels;
 			audioBuffer.data = new UInt8Array(@:privateAccess new Bytes(data.data.length, data.data.b));
+			audioBuffer.dataFormat = data.dataFormat;
 			audioBuffer.sampleRate = data.sampleRate;
 			return audioBuffer;
 		}
@@ -183,6 +189,7 @@ class AudioBuffer
 			audioBuffer.bitsPerSample = data.bitsPerSample;
 			audioBuffer.channels = data.channels;
 			audioBuffer.data = new UInt8Array(@:privateAccess new Bytes(data.data.length, data.data.b));
+			audioBuffer.dataFormat = data.dataFormat;
 			audioBuffer.sampleRate = data.sampleRate;
 			return audioBuffer;
 		}
@@ -238,6 +245,7 @@ class AudioBuffer
 			audioBuffer.bitsPerSample = data.bitsPerSample;
 			audioBuffer.channels = data.channels;
 			audioBuffer.data = new UInt8Array(@:privateAccess new Bytes(data.data.length, data.data.b));
+			audioBuffer.dataFormat = data.dataFormat;
 			audioBuffer.sampleRate = data.sampleRate;
 			return audioBuffer;
 		}
@@ -287,7 +295,7 @@ class AudioBuffer
 		@return An `AudioBuffer` instance with the decoded audio data.
 	**/
 	#if lime_vorbis
-		
+
 	public static function fromVorbisFile(vorbisFile:VorbisFile):AudioBuffer
 	{
 		if (vorbisFile == null) return null;
@@ -298,6 +306,7 @@ class AudioBuffer
 		audioBuffer.channels = info.channels;
 		audioBuffer.sampleRate = info.rate;
 		audioBuffer.bitsPerSample = 16;
+		audioBuffer.dataFormat = PCM;
 		audioBuffer.__srcVorbisFile = vorbisFile;
 
 		return audioBuffer;
