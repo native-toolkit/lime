@@ -21,7 +21,7 @@
 	<define name="lime-native" if="native" />
 	<define name="lime-openal" unless="lime-console || flash || html5" />
 	<define name="lime-openalsoft" if="lime-openal" unless="ios || tvos || static_link" />
-	<define name="lime-mojoal" if="lime-openal" unless="lime-openalsoft" />
+	<define name="lime-mojoal" if="lime-openal" unless="ios || tvos || lime-openalsoft" />
 	<define name="lime-opengl" if="desktop" unless="html5" />
 	<define name="lime-opengles" if="emscripten || mobile" />
 	<define name="lime-vorbis" if="native" />
