@@ -1,6 +1,6 @@
 package lime.utils;
 
-#if (haxe_ver >= 4.0) enum #else @:enum #end abstract AssetType(String) to String
+enum abstract AssetType(String) to String
 {
 	var BINARY = "BINARY";
 	var FONT = "FONT";

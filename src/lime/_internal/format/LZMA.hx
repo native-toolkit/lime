@@ -26,7 +26,7 @@ class LZMA
 		return @:privateAccess new Bytes(data.length, data.b);
 		#end
 		#elseif js
-		var data = untyped #if haxe4 js.Syntax.code #else __js__ #end ("LZMA.compress")(new UInt8Array(bytes.getData()), 5);
+		var data = untyped js.Syntax.code("LZMA.compress")(new UInt8Array(bytes.getData()), 5);
 		if ((data is String))
 		{
 			return Bytes.ofString(data);
@@ -59,7 +59,7 @@ class LZMA
 		return @:privateAccess new Bytes(data.length, data.b);
 		#end
 		#elseif js
-		var data = untyped #if haxe4 js.Syntax.code #else __js__ #end ("LZMA.decompress")(new UInt8Array(bytes.getData()));
+		var data = untyped js.Syntax.code("LZMA.decompress")(new UInt8Array(bytes.getData()));
 		if ((data is String))
 		{
 			return Bytes.ofString(data);

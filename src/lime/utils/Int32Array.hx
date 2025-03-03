@@ -1,13 +1,9 @@
 package lime.utils;
 
 #if (js && !doc_gen)
-#if haxe4
 import js.lib.Int32Array as JSInt32Array;
 import js.lib.Uint8Array as JSUInt8Array;
-#else
-import js.html.Int32Array as JSInt32Array;
-import js.html.Uint8Array as JSUInt8Array;
-#end
+
 @:forward
 @:transitive
 abstract Int32Array(JSInt32Array) from JSInt32Array to JSInt32Array
@@ -61,10 +57,10 @@ abstract Int32Array(JSInt32Array) from JSInt32Array to JSInt32Array
 		}
 	}
 
-	@:arrayAccess #if (haxe_ver >= 4.0) extern #else @:extern #end inline function __set(idx:Int, val:Int):Int
+	@:arrayAccess extern inline function __set(idx:Int, val:Int):Int
 		return this[idx] = val;
 
-	@:arrayAccess #if (haxe_ver >= 4.0) extern #else @:extern #end inline function __get(idx:Int):Int
+	@:arrayAccess extern inline function __get(idx:Int):Int
 		return this[idx];
 
 	// non spec haxe conversions
@@ -148,15 +144,15 @@ abstract Int32Array(ArrayBufferView) from ArrayBufferView to ArrayBufferView
 		return this.length;
 
 	@:noCompletion
-	@:arrayAccess #if (haxe_ver >= 4.0) extern #else @:extern #end
-	public inline function __get(idx:Int)
+	@:arrayAccess
+	extern public inline function __get(idx:Int)
 	{
 		return ArrayBufferIO.getInt32(this.buffer, this.byteOffset + (idx * BYTES_PER_ELEMENT));
 	}
 
 	@:noCompletion
-	@:arrayAccess #if (haxe_ver >= 4.0) extern #else @:extern #end
-	public inline function __set(idx:Int, val:Int)
+	@:arrayAccess
+	extern public inline function __set(idx:Int, val:Int)
 	{
 		ArrayBufferIO.setInt32(this.buffer, this.byteOffset + (idx * BYTES_PER_ELEMENT), val);
 		return val;

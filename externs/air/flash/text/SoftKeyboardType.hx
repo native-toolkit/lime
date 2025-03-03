@@ -1,7 +1,7 @@
 package flash.text;
 
 @:native("flash.text.SoftKeyboardType")
-#if (haxe_ver >= 4.0) extern enum #else @:extern @:enum #end abstract SoftKeyboardType(String)
+extern enum abstract SoftKeyboardType(String)
 {
 	var CONTACT = "contact";
 	var DEFAULT = "default";

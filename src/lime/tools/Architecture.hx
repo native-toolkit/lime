@@ -3,7 +3,7 @@ package lime.tools;
 import haxe.macro.Expr;
 import hxp.HostArchitecture;
 
-#if (haxe_ver >= 4.0) enum #else @:enum #end abstract Architecture(String) to String
+enum abstract Architecture(String) to String
 
 {
 	var ARMV5 = "ARMV5";

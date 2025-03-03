@@ -16,13 +16,7 @@ import lime.net.HTTPRequestMethod;
 import lime.system.ThreadPool;
 import lime.system.WorkOutput;
 #if sys
-#if haxe4
 import sys.thread.Deque;
-#elseif cpp
-import cpp.vm.Deque;
-#elseif neko
-import neko.vm.Deque;
-#end
 import sys.FileSystem;
 #end
 

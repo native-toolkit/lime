@@ -38,12 +38,12 @@ class Font
      	* The ascender value of the font.
      	*/
 	public var ascender:Int;
-	
+
 	 /**
      	* The descender value of the font.
      	*/
 	public var descender:Int;
-	
+
 	/**
      	* The height of the font.
      	*/
@@ -59,7 +59,7 @@ class Font
      	*/
 	public var numGlyphs:Int;
 
-	
+
 	public var src:Dynamic;
 
 	/**
@@ -98,29 +98,29 @@ class Font
 
 		if (!__init)
 		{
-			#if js if (ascender == untyped #if haxe4 js.Syntax.code #else __js__ #end ("undefined")) #end ascender = 0;
+			#if js if (ascender == untyped js.Syntax.code("undefined")) #end ascender = 0;
 			#if js
-			if (descender == untyped #if haxe4 js.Syntax.code #else __js__ #end ("undefined"))
+			if (descender == untyped js.Syntax.code("undefined"))
 			#end
 			descender = 0;
 			#if js
-			if (height == untyped #if haxe4 js.Syntax.code #else __js__ #end ("undefined"))
+			if (height == untyped js.Syntax.code("undefined"))
 			#end
 			height = 0;
 			#if js
-			if (numGlyphs == untyped #if haxe4 js.Syntax.code #else __js__ #end ("undefined"))
+			if (numGlyphs == untyped js.Syntax.code("undefined"))
 			#end
 			numGlyphs = 0;
 			#if js
-			if (underlinePosition == untyped #if haxe4 js.Syntax.code #else __js__ #end ("undefined"))
+			if (underlinePosition == untyped js.Syntax.code("undefined"))
 			#end
 			underlinePosition = 0;
 			#if js
-			if (underlineThickness == untyped #if haxe4 js.Syntax.code #else __js__ #end ("undefined"))
+			if (underlineThickness == untyped js.Syntax.code("undefined"))
 			#end
 			underlineThickness = 0;
 			#if js
-			if (unitsPerEM == untyped #if haxe4 js.Syntax.code #else __js__ #end ("undefined"))
+			if (unitsPerEM == untyped js.Syntax.code("undefined"))
 			#end
 			unitsPerEM = 0;
 

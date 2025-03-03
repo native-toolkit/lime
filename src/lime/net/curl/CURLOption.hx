@@ -1,7 +1,7 @@
 package lime.net.curl;
 
 #if (!lime_doc_gen || lime_curl)
-#if (haxe_ver >= 4.0) enum #else @:enum #end abstract CURLOption(Int) from Int to Int from UInt to UInt
+enum abstract CURLOption(Int) from Int to Int from UInt to UInt
 {
 	// var FILE = 10001;
 	// var WRITEDATA = 10001;

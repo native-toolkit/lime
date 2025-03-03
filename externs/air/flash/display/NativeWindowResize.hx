@@ -1,7 +1,7 @@
 package flash.display;
 
 @:native("flash.display.NativeWindowResize")
-#if (haxe_ver >= 4.0) extern enum #else @:extern @:enum #end abstract NativeWindowResize(String)
+extern enum abstract NativeWindowResize(String)
 {
 	var BOTTOM = "bottom";
 	var BOTTOM_LEFT = "bottomLeft";

@@ -1,13 +1,9 @@
 package lime.utils;
 
 #if (js && !doc_gen)
-#if haxe4
 import js.lib.Float64Array as JSFloat64Array;
 import js.lib.Uint8Array as JSUInt8Array;
-#else
-import js.html.Float64Array as JSFloat64Array;
-import js.html.Uint8Array as JSUInt8Array;
-#end
+
 @:forward
 @:transitive
 abstract Float64Array(JSFloat64Array) from JSFloat64Array to JSFloat64Array
@@ -61,10 +57,10 @@ abstract Float64Array(JSFloat64Array) from JSFloat64Array to JSFloat64Array
 		}
 	}
 
-	@:arrayAccess #if (haxe_ver >= 4.0) extern #else @:extern #end inline function __set(idx:Int, val:Float):Float
+	@:arrayAccess extern inline function __set(idx:Int, val:Float):Float
 		return this[idx] = val;
 
-	@:arrayAccess #if (haxe_ver >= 4.0) extern #else @:extern #end inline function __get(idx:Int):Float
+	@:arrayAccess extern inline function __get(idx:Int):Float
 		return this[idx];
 
 	// non spec haxe conversions
@@ -148,15 +144,15 @@ abstract Float64Array(ArrayBufferView) from ArrayBufferView to ArrayBufferView
 		return this.length;
 
 	@:noCompletion
-	@:arrayAccess #if (haxe_ver >= 4.0) extern #else @:extern #end
-	public inline function __get(idx:Int):Float
+	@:arrayAccess
+	extern public inline function __get(idx:Int):Float
 	{
 		return ArrayBufferIO.getFloat64(this.buffer, this.byteOffset + (idx * BYTES_PER_ELEMENT));
 	}
 
 	@:noCompletion
-	@:arrayAccess #if (haxe_ver >= 4.0) extern #else @:extern #end
-	public inline function __set(idx:Int, val:Float):Float
+	@:arrayAccess
+	extern public inline function __set(idx:Int, val:Float):Float
 	{
 		ArrayBufferIO.setFloat64(this.buffer, this.byteOffset + (idx * BYTES_PER_ELEMENT), val);
 		return val;

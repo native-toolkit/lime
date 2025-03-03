@@ -1429,7 +1429,7 @@ class Image
 	@:noCompletion private function __fromBase64(base64:String, type:String, onload:Image->Void = null):Void
 	{
 		#if (js && html5)
-		var image:JSImage = untyped #if haxe4 js.Syntax.code #else __js__ #end ('new window.Image ()');
+		var image:JSImage = untyped js.Syntax.code('new window.Image ()');
 
 		var image_onLoaded = function(event)
 		{
@@ -1522,7 +1522,7 @@ class Image
 	@:noCompletion private function __fromFile(path:String, onload:Image->Void = null, onerror:Void->Void = null):Bool
 	{
 		#if (js && html5)
-		var image:JSImage = untyped #if haxe4 js.Syntax.code #else __js__ #end ('new window.Image ()');
+		var image:JSImage = untyped js.Syntax.code('new window.Image ()');
 
 		#if !display
 		if (!HTML5HTTPRequest.__isSameOrigin(path))

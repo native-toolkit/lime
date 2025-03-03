@@ -1,6 +1,6 @@
 package lime.system;
 
-#if (haxe_ver >= 4.0) enum #else @:enum #end abstract Orientation(Int)
+enum abstract Orientation(Int)
 {
 	var UNKNOWN = 0;
 	var LANDSCAPE = 1;

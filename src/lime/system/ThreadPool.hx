@@ -60,7 +60,7 @@ import lime._internal.backend.html5.HTML5Thread as Thread;
 #end
 class ThreadPool extends WorkOutput
 {
-	#if (haxe4 && lime_threads)
+	#if lime_threads
 	/**
 		A thread or null value to be compared against `Thread.current()`. Don't
 		do anything with this other than check for equality.
@@ -99,7 +99,7 @@ class ThreadPool extends WorkOutput
 	**/
 	public static inline function isMainThread():Bool
 	{
-		#if (haxe4 && lime_threads)
+		#if lime_threads
 		return Thread.current() == __mainThread;
 		#else
 		return true;
@@ -731,11 +731,7 @@ class JobList
 
 	public inline function clear():Void
 	{
-		#if haxe4
 		__jobs.resize(0);
-		#else
-		__jobs = [];
-		#end
 		__addingWorkPriority = false;
 	}
 
