@@ -79,7 +79,7 @@ class BackgroundWorker
 	{
 		canceled = true;
 
-		#if (cpp || neko || && hl)
+		#if (cpp || neko || hl)
 		__workerThread = null;
 		#end
 	}
@@ -94,7 +94,7 @@ class BackgroundWorker
 		completed = false;
 		__runMessage = message;
 
-		#if (cpp || neko || && hl)
+		#if (cpp || neko || hl)
 		__messageQueue = new Deque<Dynamic>();
 		__workerThread = Thread.create(__doWork);
 
@@ -117,7 +117,7 @@ class BackgroundWorker
 	{
 		completed = true;
 
-		#if (cpp || neko || && hl)
+		#if (cpp || neko || hl)
 		__messageQueue.add(MESSAGE_COMPLETE);
 		__messageQueue.add(message);
 		#else
@@ -135,7 +135,7 @@ class BackgroundWorker
 	**/
 	public function sendError(message:Dynamic = null):Void
 	{
-		#if (cpp || neko || && hl)
+		#if (cpp || neko || hl)
 		__messageQueue.add(MESSAGE_ERROR);
 		__messageQueue.add(message);
 		#else
@@ -153,7 +153,7 @@ class BackgroundWorker
 	**/
 	public function sendProgress(message:Dynamic = null):Void
 	{
-		#if (cpp || neko || && hl)
+		#if (cpp || neko || hl)
 		__messageQueue.add(message);
 		#else
 		if (!canceled)
