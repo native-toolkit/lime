@@ -760,7 +760,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        haxe-version: [3.4.7, 4.0.5, 4.1.5, 4.2.5, 4.3.6]
+        haxe-version: [4.0.5, 4.1.5, 4.2.5, 4.3.6]
     steps:
 
       - uses: actions/checkout@v4
@@ -794,7 +794,6 @@ jobs:
           lime build HelloWorld html5 -release -verbose -nocolor
 
       - name: Build HelloWorld variants
-        if: ${{ matrix.haxe-version != '3.4.7' }}
         run: |
           lime build HelloWorld html5 -clean -release -verbose -nocolor --haxelib=genes
           lime build HelloWorld html5 -clean -release -verbose -nocolor -minify -terser
@@ -805,7 +804,6 @@ jobs:
           lime build SimpleImage html5 -release -verbose -nocolor
 
       - name: Build SimpleImage variants
-        if: ${{ matrix.haxe-version != '3.4.7' }}
         run: |
           lime build SimpleImage html5 -clean -release -verbose -nocolor --haxelib=genes
           lime build SimpleImage html5 -clean -release -verbose -nocolor -minify -terser
@@ -816,7 +814,6 @@ jobs:
           lime build SimpleAudio html5 -release -verbose -nocolor
 
       - name: Build SimpleAudio variants
-        if: ${{ matrix.haxe-version != '3.4.7' }}
         run: |
           lime build SimpleAudio html5 -clean -release -verbose -nocolor --haxelib=genes
           lime build SimpleAudio html5 -clean -release -verbose -nocolor -minify -terser
@@ -825,7 +822,7 @@ jobs:
     needs: package-haxelib
     strategy:
       matrix:
-        haxe-version: [3.4.7, 4.2.5]
+        haxe-version: [4.2.5]
         os: [windows-latest, ubuntu-20.04, macos-13]
     runs-on: ${{ matrix.os }}
     steps:
