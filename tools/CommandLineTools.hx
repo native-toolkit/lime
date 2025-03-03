@@ -496,16 +496,14 @@ class CommandLineTools
 
 			case LINUX:
 				var arguments = Sys.args();
-				var raspberryPi = false;
 
-				for (argument in arguments)
+				if (System.hostArchitecture == ARMV7 )
 				{
-					if (argument == "-rpi") raspberryPi = true;
+					untyped $loader.path = $array(path + "LinuxArm/", $loader.path);
 				}
-
-				if (raspberryPi || System.hostArchitecture == ARMV6 || System.hostArchitecture == ARMV7)
+				else if (System.hostArchitecture == ARM64)
 				{
-					untyped $loader.path = $array(path + "RPi/", $loader.path);
+					untyped $loader.path = $array(path + "LinuxArm64/", $loader.path);
 				}
 				else if (System.hostArchitecture == X64)
 				{
@@ -953,6 +951,12 @@ class CommandLineTools
 		Log.println("");
 		Log.println(" " + Log.accentColor + "Options:" + Log.resetColor);
 		Log.println("");
+
+		if (command == "setup")
+		{
+			Log.println("  \x1b[1m-cli\x1b[0;3m/\x1b[0m\x1b[1m-alias\x1b[0m -- Set up " + defaultLibraryName + " alias only, skipping haxelib installs");
+			Log.println("  \x1b[1m-noalias\x1b[0m -- Do not set up " + defaultLibraryName + " alias");
+		}
 
 		if (isBuildCommand)
 		{
@@ -1515,6 +1519,11 @@ class CommandLineTools
 			case "cpp":
 				target = System.hostPlatform;
 				targetFlags.set("cpp", "");
+
+				if (target == Platform.MAC)
+				{
+					overrides.haxedefs.set("macos", "");
+				}
 
 			case "neko":
 				target = System.hostPlatform;

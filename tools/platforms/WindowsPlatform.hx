@@ -203,7 +203,13 @@ class WindowsPlatform extends PlatformTarget
 			}
 		}
 
-		targetDirectory = Path.combine(project.app.path, project.config.getString("windows.output-directory", targetType == "cpp" ? "windows" : targetType));
+		var defaultTargetDirectory = switch (targetType)
+		{
+			case "cpp": "windows";
+			case "hl": project.targetFlags.exists("hlc") ? "hlc" : targetType;
+			default: targetType;
+		}
+		targetDirectory = Path.combine(project.app.path, project.config.getString("windows.output-directory", defaultTargetDirectory));
 		targetDirectory = StringTools.replace(targetDirectory, "arch64", is64 ? "64" : "");
 
 		if (targetType == "winjs")
@@ -377,7 +383,7 @@ class WindowsPlatform extends PlatformTarget
 						var visualStudioPath = StringTools.trim(vswhereOutput);
 						var vcvarsallPath = visualStudioPath + "\\VC\\Auxiliary\\Build\\vcvarsall.bat";
 						// this command sets up the environment variables and things that visual studio requires
-						var vcvarsallCommand = [vcvarsallPath, "x64"].map(arg -> ~/([&|\(\)<>\^ ])/g.replace(arg, "^$1"));
+						var vcvarsallCommand = [vcvarsallPath, "x64"].map(function(arg:String):String { return ~/([&|\(\)<>\^ ])/g.replace(arg, "^$1"); });
 						// this command runs the cl.exe c compiler from visual studio
 						var clCommand = ["cl.exe", "/Ox", "/Fe:" + executablePath, "-I", Path.combine(targetDirectory, "obj"), Path.combine(targetDirectory, "obj/ApplicationMain.c")];
 						for (file in System.readDirectory(applicationDirectory))
@@ -392,7 +398,7 @@ class WindowsPlatform extends PlatformTarget
 						}
 						clCommand.push("/link");
 						clCommand.push("/subsystem:windows");
-						clCommand = clCommand.map(arg -> ~/([&|\(\)<>\^ ])/g.replace(arg, "^$1"));
+						clCommand = clCommand.map(function(arg:String):String { return ~/([&|\(\)<>\^ ])/g.replace(arg, "^$1"); });
 						// combine both commands into one
 						command = ["cmd.exe", "/s", "/c", vcvarsallCommand.join(" ") + " && " + clCommand.join(" ")];
 					}
@@ -543,8 +549,8 @@ class WindowsPlatform extends PlatformTarget
 			}
 			else
 			{
-				var haxeArgs = [hxml];
-				var flags = [];
+				var haxeArgs = [hxml, "-D", "resourceFile=ApplicationMain.rc"];
+				var flags = ["-DresourceFile=ApplicationMain.rc"];
 
 				if (is64)
 				{
@@ -574,7 +580,7 @@ class WindowsPlatform extends PlatformTarget
 
 					System.copyFile(targetDirectory + "/obj/ApplicationMain" + (project.debug ? "-debug" : "") + ".exe", executablePath);
 
-					if (project.targetFlags.exists("mingw"))
+					if (project.defines.exists("mingw"))
 					{
 						var libraries = ["libwinpthread-1.dll", "libstdc++-6.dll"];
 						if (is64)
@@ -673,6 +679,29 @@ class WindowsPlatform extends PlatformTarget
 		}
 		else
 		{
+			if (targetType == "cpp")
+			{
+				if (context.APP_DESCRIPTION == null || context.APP_DESCRIPTION == "")
+				{
+					context.APP_DESCRIPTION = project.meta.title;
+				}
+
+				if (context.APP_COPYRIGHT_YEARS == null || context.APP_COPYRIGHT_YEARS == "")
+				{
+					context.APP_COPYRIGHT_YEARS = Std.string(Date.now().getFullYear());
+				}
+
+				var versionParts = project.meta.version.split(".");
+
+				if (versionParts.length == 3)
+				{
+					versionParts.push("0");
+				}
+
+				context.FILE_VERSION = versionParts.join(".");
+				context.VERSION_NUMBER = versionParts.join(",");
+			}
+
 			context.NEKO_FILE = targetDirectory + "/obj/ApplicationMain.n";
 			context.NODE_FILE = targetDirectory + "/bin/ApplicationMain.js";
 			context.HL_FILE = targetDirectory + "/obj/ApplicationMain" + (project.defines.exists("hlc") ? ".c" : ".hl");
@@ -915,6 +944,11 @@ class WindowsPlatform extends PlatformTarget
 			project.haxeflags.push("-xml " + targetDirectory + "/types.xml");
 		}
 
+		if (project.targetFlags.exists("json"))
+		{
+			project.haxeflags.push("--json " + targetDirectory + "/types.json");
+		}
+
 		for (asset in project.assets)
 		{
 			if (asset.embed && asset.sourcePath == "")
@@ -976,9 +1010,14 @@ class WindowsPlatform extends PlatformTarget
 			ProjectHelper.recursiveSmartCopyTemplate(project, "winrt/temp", targetDirectory + "/haxe/temp", context, false, true);
 			ProjectHelper.recursiveSmartCopyTemplate(project, "winrt/scripts", targetDirectory + "/scripts", context, true, true);
 		}
-		else if (targetType == "cpp" && project.targetFlags.exists("static"))
+		else if (targetType == "cpp")
 		{
-			ProjectHelper.recursiveSmartCopyTemplate(project, "cpp/static", targetDirectory + "/obj", context);
+			ProjectHelper.recursiveSmartCopyTemplate(project, "windows/resource", targetDirectory + "/obj", context);
+
+			if (project.targetFlags.exists("static"))
+			{
+				ProjectHelper.recursiveSmartCopyTemplate(project, "cpp/static", targetDirectory + "/obj", context);
+			}
 		}
 
 		/*if (IconHelper.createIcon (project.icons, 32, 32, Path.combine (applicationDirectory, "icon.png"))) {
@@ -1059,6 +1098,11 @@ class WindowsPlatform extends PlatformTarget
 		if (project.targetFlags.exists("xml"))
 		{
 			project.haxeflags.push("-xml " + targetDirectory + "/types.xml");
+		}
+
+		if (project.targetFlags.exists("json"))
+		{
+			project.haxeflags.push("--json " + targetDirectory + "/types.json");
 		}
 
 		if (Log.verbose)
