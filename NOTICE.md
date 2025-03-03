@@ -136,6 +136,3 @@ This product bundles http-server 0.10.0 and its dependencies, which is available
 
 This product bundles webify 0.1.1.0, which is available under an
 "MIT" license. For details, see https://github.com/ananthakumaran/webify.
-
-This product bundles YUI Compressor 2.4.7, which is available under an
-"MIT" license. For details, see https://github.com/yui/yuicompressor.
