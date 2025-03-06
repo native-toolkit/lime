@@ -1,7 +1,7 @@
 <xml>
 
 	<set name="PLATFORM" value="android-21" if="android" />
-	<set name="HXCPP_CPP11" value="1" />
+	<set name="HXCPP_CPP17" value="1" />
 
 	<include name="${HXCPP}/build-tool/BuildCommon.xml" />
 
@@ -30,7 +30,8 @@
 	<set name="LIME_OPENGL" value="1" />
 	<set name="LIME_PIXMAN" value="1" />
 	<set name="LIME_PNG" value="1" />
-	<set name="LIME_SDL" value="1" />
+	<!-- <set name="LIME_SDL" value="1" /> -->
+	<set name="LIME_SDL3" value="1" />
 	<!-- <set name="LIME_SDL_ANGLE" value="1" if="windows" unless="static_link" /> -->
 	<set name="LIME_SDL_ANGLE" value="1" if="windows LIME_SDL_ANGLE" unless="static_link" />
 	<set name="LIME_SDL_ANGLE" value="1" if="windows angle" unless="static_link" />
@@ -49,7 +50,8 @@
 	<set name="NATIVE_TOOLKIT_HAVE_HARFBUZZ" value="1" if="LIME_HARFBUZZ" />
 	<set name="NATIVE_TOOLKIT_HAVE_MBEDTLS" value="1" if="LIME_MBEDTLS" />
 	<set name="NATIVE_TOOLKIT_HAVE_PNG" value="1" if="LIME_PNG" />
-	<set name="NATIVE_TOOLKIT_HAVE_SDL" value="1" if="LIME_SDL" />
+	<set name="NATIVE_TOOLKIT_HAVE_SDL3" value="1" if="LIME_SDL3" unless="NATIVE_TOOLKIT_HAVE_SDL" />
+	<set name="NATIVE_TOOLKIT_HAVE_SDL" value="1" if="LIME_SDL" unless="NATIVE_TOOLKIT_HAVE_SDL3" />
 
 	<set name="NATIVE_TOOLKIT_SDL_STATIC" value="1" />
 	<set name="NATIVE_TOOLKIT_SDL_ANGLE" value="1" if="LIME_SDL_ANGLE" />
@@ -271,6 +273,61 @@
 
 		</section>
 
+		<section if="LIME_SDL3">
+
+			<section if="emscripten">
+
+				<compilerflag value="-s" />
+				<compilerflag value="USE_SDL=3" />
+
+			</section>
+
+			<section unless="emscripten">
+
+				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl3/include/" />
+				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl3/include/build-configs/" unless="windows || mac || linux || rpi" />
+				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl3/include/build-configs/" if="linux" unless="rpi" />
+				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl3/include/build-configs/" if="windows" unless="winrt" />
+				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl3/include/build-configs/" if="mac" />
+				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl3/include/build-configs/" if="rpi" />
+				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl3/include/build-configs/" if="winrt" />
+
+				<compilerflag value="-DHAVE_LIBC" />
+
+			</section>
+
+			<section if="rpi">
+
+				<compilerflag value="-I/usr/include/libdrm" />
+				<compilerflag value="-I/usr/include/dbus-1.0" />
+				<compilerflag value="-I/usr/lib/arm-linux-gnueabihf/dbus-1.0/include" unless="HXCPP_ARM64" />
+				<compilerflag value="-I/usr/lib/aarch64-linux-gnu/dbus-1.0/include" if="HXCPP_ARM64" />
+				<compilerflag value="-I/usr/local/include" />
+
+				<compilerflag value="-ldrm" />
+				<compilerflag value="-lgbm" />
+
+				<compilerflag value="-Wl,--no-undefined -lm -ldl -ldrm -lpthread -lrt" />
+
+			</section>
+
+			<compilerflag value="-DLIME_SDL3" />
+			<compilerflag value="-DNATIVE_TOOLKIT_SDL_ANGLE" if="NATIVE_TOOLKIT_SDL_ANGLE" />
+			<compilerflag value="-D__IPHONEOS__" if="ios || tvos" />
+			<compilerflag value="-D__APPLETVOS__" if="tvos" />
+			<compilerflag value="-DAPPLETV" if="tvos" />
+			<compilerflag value="-DHAVE_STDIO_H" unless="windows" />
+
+			<file name="src/backend/sdl3/SDLApplication.cpp" />
+			<file name="src/backend/sdl3/SDLGamepad.cpp" />
+			<file name="src/backend/sdl3/SDLJoystick.cpp" />
+			<file name="src/backend/sdl3/SDLKeyCode.cpp" />
+			<file name="src/backend/sdl3/SDLMutex.cpp" />
+			<file name="src/backend/sdl3/SDLSystem.cpp" />
+			<file name="src/backend/sdl3/SDLWindow.cpp" />
+
+		</section>
+
 		<section if="LIME_TINYFILEDIALOGS">
 
 			<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/tinyfiledialogs/" />
@@ -366,7 +423,8 @@
 	<include name="lib/openal-files.xml" />
 	<include name="lib/pixman-files.xml" />
 	<include name="lib/png-files.xml" />
-	<include name="lib/sdl-files.xml" />
+	<include name="lib/sdl3-files.xml" unless="LIME_SDL" />
+	<include name="lib/sdl-files.xml" unless="LIME_SDL3" />
 	<include name="lib/tinyfiledialogs-files.xml" />
 	<include name="lib/vorbis-files.xml" />
 	<include name="lib/vpx-files.xml" />
@@ -399,7 +457,8 @@
 		<files id="native-toolkit-openal" if="LIME_OPENALSOFT" />
 		<files id="native-toolkit-pixman" if="LIME_PIXMAN" />
 		<files id="native-toolkit-png" if="LIME_PNG" />
-		<files id="native-toolkit-sdl" if="LIME_SDL" unless="emscripten" />
+		<files id="native-toolkit-sdl" if="LIME_SDL" unless="emscripten || LIME_SDL3" />
+		<files id="native-toolkit-sdl3" if="LIME_SDL3" unless="emscripten || LIME_SDL" />
 		<files id="native-toolkit-tinyfiledialogs" if="LIME_TINYFILEDIALOGS" />
 		<files id="native-toolkit-vorbis" if="LIME_VORBIS" />
 		<files id="native-toolkit-vpx" if="LIME_VPX" />

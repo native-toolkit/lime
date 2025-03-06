@@ -6,7 +6,7 @@
 #define RESTRICT __restrict
 
 /* Define if HRTF data is embedded in the library */
-#define ALSOFT_EMBED_HRTF_DATA
+// #define ALSOFT_EMBED_HRTF_DATA
 
 /* Define if we have the C11 aligned_alloc function */
 /* #undef HAVE_ALIGNED_ALLOC */
@@ -24,55 +24,56 @@
 /* #undef HAVE_GETOPT */
 
 /* Define if we have SSE CPU extensions */
-#undef HAVE_SSE
-#undef HAVE_SSE2
-#undef HAVE_SSE3
-/* #undef HAVE_SSE4_1 */
+#define HAVE_SSE 0
+#define HAVE_SSE2 0
+#define FORCE_ALIGN
+#define HAVE_SSE3 0
+#define HAVE_SSE4_1 0
 
 /* Define if we have ARM Neon CPU extensions */
-#define HAVE_NEON
+#define HAVE_NEON 1
 
 /* Define if we have the ALSA backend */
-/* #undef HAVE_ALSA */
+#define HAVE_ALSA 0
 
 /* Define if we have the OSS backend */
-/* #undef HAVE_OSS */
+#define HAVE_OSS 0
 
 /* Define if we have the Solaris backend */
-/* #undef HAVE_SOLARIS */
+#define HAVE_SOLARIS 0
 
 /* Define if we have the SndIO backend */
-/* #undef HAVE_SNDIO */
+#define HAVE_SNDIO 0
 
 /* Define if we have the QSA backend */
-/* #undef HAVE_QSA */
+#define HAVE_QSA 0
 
 /* Define if we have the WASAPI backend */
-/* #undef HAVE_WASAPI */
+#define HAVE_WASAPI 0
 
 /* Define if we have the DSound backend */
-/* #undef HAVE_DSOUND */
+#define HAVE_DSOUND 0
 
 /* Define if we have the Windows Multimedia backend */
-/* #undef HAVE_WINMM */
+#define HAVE_WINMM 0
 
 /* Define if we have the PortAudio backend */
-/* #undef HAVE_PORTAUDIO */
+#define HAVE_PORTAUDIO 0
 
 /* Define if we have the PulseAudio backend */
-/* #undef HAVE_PULSEAUDIO */
+#define HAVE_PULSEAUDIO 0
 
 /* Define if we have the JACK backend */
-/* #undef HAVE_JACK */
+#define HAVE_JACK 0
 
 /* Define if we have the CoreAudio backend */
-#define HAVE_COREAUDIO
+#define HAVE_COREAUDIO 1
 
 /* Define if we have the OpenSL backend */
-/* #undef HAVE_OPENSL */
+#define HAVE_OPENSL 0
 
 /* Define if we have the Wave Writer backend */
-#define HAVE_WAVE
+#define HAVE_WAVE 1
 
 /* Define if we have the SDL2 backend */
 /* #undef HAVE_SDL2 */
