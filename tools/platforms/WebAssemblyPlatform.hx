@@ -478,16 +478,11 @@ class WebAssemblyPlatform extends PlatformTarget
 
 		for (asset in project.assets)
 		{
-			var path = Path.combine(targetDirectory + "/obj/assets", asset.targetPath);
-
-			if (asset.type != AssetType.TEMPLATE)
+			if (asset.embed != true && asset.type != AssetType.TEMPLATE)
 			{
-				// if (asset.type != AssetType.FONT) {
-
-				System.mkdir(Path.directory(path));
-				AssetHelper.copyAssetIfNewer(asset, path);
-
-				// }
+				var targetPath = Path.combine(targetDirectory + "/obj/assets", asset.targetPath);
+				System.mkdir(Path.directory(targetPath));
+				AssetHelper.copyAssetIfNewer(asset, targetPath);
 			}
 		}
 
@@ -499,12 +494,11 @@ class WebAssemblyPlatform extends PlatformTarget
 
 		for (asset in project.assets)
 		{
-			var path = Path.combine(destination, asset.targetPath);
-
-			if (asset.type == AssetType.TEMPLATE)
+			if (asset.embed != true && asset.type == AssetType.TEMPLATE)
 			{
-				System.mkdir(Path.directory(path));
-				AssetHelper.copyAsset(asset, path, context);
+				var targetPath = Path.combine(destination, asset.targetPath);
+				System.mkdir(Path.directory(targetPath));
+				AssetHelper.copyAsset(asset, targetPath, context);
 			}
 		}
 	}
