@@ -9,7 +9,7 @@
 #define RESTRICT __restrict
 
 /* Define if HRTF data is embedded in the library */
-#define ALSOFT_EMBED_HRTF_DATA
+// #define ALSOFT_EMBED_HRTF_DATA
 
 /* Define if we have the posix_memalign function */
 #define HAVE_POSIX_MEMALIGN
@@ -25,58 +25,67 @@
 
 /* Define if we have SSE CPU extensions */
 #ifndef RASPBERRYPI
-#define HAVE_SSE
-#define HAVE_SSE2
-#define HAVE_SSE3
-/* #undef HAVE_SSE4_1 */
+#define HAVE_SSE 1
+#define HAVE_SSE2 1
+#define FORCE_ALIGN __attribute__((force_align_arg_pointer))
+#define HAVE_SSE3 1
+#define HAVE_SSE4_1 0
+#else
+#define HAVE_SSE 0
+#define HAVE_SSE2 0
+#define FORCE_ALIGN
+#define HAVE_SSE3 0
+#define HAVE_SSE4_1 0
 #endif
 
 /* Define if we have ARM Neon CPU extensions */
 #ifdef RASPBERRYPI
-#define HAVE_NEON
+#define HAVE_NEON 1
+#else
+#define HAVE_NEON 0
 #endif
 
 /* Define if we have the ALSA backend */
-#define HAVE_ALSA
+#define HAVE_ALSA 1
 
 /* Define if we have the OSS backend */
-#define HAVE_OSS
+#define HAVE_OSS 1
 
 /* Define if we have the Solaris backend */
-/* #undef HAVE_SOLARIS */
+#define HAVE_SOLARIS 0
 
 /* Define if we have the SndIO backend */
-/* #undef HAVE_SNDIO */
+#define HAVE_SNDIO 0
 
 /* Define if we have the QSA backend */
-/* #undef HAVE_QSA */
+#define HAVE_QSA 0
 
 /* Define if we have the WASAPI backend */
-/* #undef HAVE_WASAPI */
+#define HAVE_WASAPI 0
 
 /* Define if we have the DSound backend */
-/* #undef HAVE_DSOUND */
+#define HAVE_DSOUND 0
 
 /* Define if we have the Windows Multimedia backend */
-/* #undef HAVE_WINMM */
+#define HAVE_WINMM 0
 
 /* Define if we have the PortAudio backend */
-/* #undef HAVE_PORTAUDIO */
+#define HAVE_PORTAUDIO 0
 
 /* Define if we have the PulseAudio backend */
-#define HAVE_PULSEAUDIO
+#define HAVE_PULSEAUDIO 1
 
 /* Define if we have the JACK backend */
-/* #undef HAVE_JACK */
+#define HAVE_JACK 0
 
 /* Define if we have the CoreAudio backend */
-/* #undef HAVE_COREAUDIO */
+#define HAVE_COREAUDIO 0
 
 /* Define if we have the OpenSL backend */
-/* #undef HAVE_OPENSL */
+#define HAVE_OPENSL 0
 
 /* Define if we have the Wave Writer backend */
-#define HAVE_WAVE
+#define HAVE_WAVE 1
 
 /* Define if we have the SDL2 backend */
 /* #undef HAVE_SDL2 */

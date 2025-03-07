@@ -4,7 +4,11 @@
 #include <jni.h>
 #include <pthread.h>
 #include <android/log.h>
+#if SDL_MAJOR_VERSION == 3
+#include <SDL3/SDL.h>
+#else
 #include <SDL.h>
+#include
 #include <map>
 #include <string>
 

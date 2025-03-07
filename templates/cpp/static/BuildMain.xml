@@ -79,7 +79,7 @@
 
 		<section if="android">
 
-			<lib name="-Wl,--undefined=Java_org_libsdl_app_SDLActivity_nativeInit" if="LIME_SDL"/>
+			<lib name="-Wl,--undefined=Java_org_libsdl_app_SDLActivity_nativeInit" if="LIME_SDL" if="LIME_SDL3"/>
 			<lib name="-ldl" />
 			<lib name="-llog" />
 			<lib name="-landroid" />
