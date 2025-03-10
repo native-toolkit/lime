@@ -285,6 +285,7 @@
 			<section unless="emscripten">
 
 				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl3/include/" />
+				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl3/include/SDL3" />
 				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl3/include/build-configs/" unless="windows || mac || linux || rpi" />
 				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl3/include/build-configs/" if="linux" unless="rpi" />
 				<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/sdl3/include/build-configs/" if="windows" unless="winrt" />

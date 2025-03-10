@@ -2,6 +2,9 @@
 
     <files id="native-toolkit-sdl3-depends">
 
+    <depend name="${NATIVE_TOOLKIT_PATH}/sdl3/include/SDL3/SDL_stdinc.h" />
+    <depend name="${NATIVE_TOOLKIT_PATH}/sdl3/src/libm/math_libm.h" />
+    <depend name="${NATIVE_TOOLKIT_PATH}/custom/sdl3/include-config-relwithdebinfo/build_config" if="linux || rpi" />
     <depend name="${NATIVE_TOOLKIT_PATH}/sdl3/include/SDL3/SDL_filesystem.h" />
     <depend name="${NATIVE_TOOLKIT_PATH}/sdl3/include/SDL3/SDL_properties.h" />
     <depend name="${NATIVE_TOOLKIT_PATH}/sdl3/include/SDL3/SDL_clipboard.h" />
@@ -46,7 +49,6 @@
     <depend name="${NATIVE_TOOLKIT_PATH}/sdl3/include/SDL3/SDL_locale.h" />
     <depend name="${NATIVE_TOOLKIT_PATH}/sdl3/include/SDL3/SDL_tray.h" />
     <depend name="${NATIVE_TOOLKIT_PATH}/sdl3/include/SDL3/SDL_oldnames.h" />
-    <depend name="${NATIVE_TOOLKIT_PATH}/sdl3/include/SDL3/SDL_cpuinfo.h" />
     <depend name="${NATIVE_TOOLKIT_PATH}/sdl3/include/SDL3/SDL_init.h" />
     <depend name="${NATIVE_TOOLKIT_PATH}/sdl3/include/SDL3/SDL_copying.h" />
     <depend name="${NATIVE_TOOLKIT_PATH}/sdl3/include/SDL3/SDL_messagebox.h" />
@@ -72,7 +74,6 @@
     <depend name="${NATIVE_TOOLKIT_PATH}/sdl3/include/SDL3/SDL_test_harness.h" />
     <depend name="${NATIVE_TOOLKIT_PATH}/sdl3/include/SDL3/SDL_test_fuzzer.h" />
     <depend name="${NATIVE_TOOLKIT_PATH}/sdl3/include/SDL3/SDL_video.h" />
-    <depend name="${NATIVE_TOOLKIT_PATH}/sdl3/include/SDL3/SDL_stdinc.h" />
     <depend name="${NATIVE_TOOLKIT_PATH}/sdl3/include/SDL3/SDL_test_assert.h" />
     <depend name="${NATIVE_TOOLKIT_PATH}/sdl3/include/SDL3/SDL_surface.h" />
     <depend name="${NATIVE_TOOLKIT_PATH}/sdl3/include/SDL3/SDL_begin_code.h" />
@@ -109,6 +110,7 @@
         <tag value="${NATIVE_TOOLKIT_OPTIM_TAG}" if="NATIVE_TOOLKIT_OPTIM_TAG" />
 
         <!-- <compilerflag value="-DUSING_GENERATED_CONFIG_H" if="linux || rpi" /> --> <!-- For other targets, it doesn't matter which header is included. -->
+        <compilerflag value="-DSDL_PLATFORM_LINUX" if="linux || rpi" />
         <depend files="native-toolkit-sdl3-depends" />
 
         <compilerflag value="-I${ANDROID_NDK_ROOT}/sources/android/cpufeatures" if="android" />
@@ -150,6 +152,8 @@
 
             <compilerflag value="-DHAVE_LINUX_INPUT_H" />
             <compilerflag value="-DHAVE_LINUX_VERSION_H" />
+            <compilerflag value="-DHAVE_STDLIB_H" />
+            <compilerflag value="-DHAVE_STDIO_H" />
             <compilerflag value="-D_REENTRANT" />
             <compilerflag value="-mmmx" unless="rpi" />
             <compilerflag value="-msse" unless="rpi" />
@@ -206,13 +210,14 @@
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/audio/SDL_audiotypecvt.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/audio/SDL_mixer.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/audio/SDL_wave.c" />
+        <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/audio/SDL_audioresample.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/cpuinfo/SDL_cpuinfo.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/dynapi/SDL_dynapi.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/events/SDL_clipboardevents.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/events/SDL_displayevents.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/events/SDL_dropevents.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/events/SDL_events.c" />
-        <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/events/SDL_gesture.c" />
+        <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/events/SDL_eventwatch.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/events/SDL_keyboard.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/events/SDL_mouse.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/events/SDL_quit.c" />
@@ -220,11 +225,12 @@
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/events/SDL_windowevents.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/events/SDL_scancode_tables.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/events/SDL_keysym_to_scancode.c" />
-        <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/file/SDL_iostream.c" />
+        <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/io/SDL_iostream.c" />
+        <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/io/SDL_asyncio.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/haptic/SDL_haptic.c" />
+        <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/filesystem/SDL_filesystem.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/hidapi/SDL_hidapi.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/joystick/controller_type.c" />
-        <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/joystick/steam/SDL_steamcontroller.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/joystick/SDL_gamepad.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/joystick/SDL_joystick.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/joystick/SDL_steam_virtual_gamepad.c" />
@@ -265,14 +271,15 @@
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/render/software/SDL_render_sw.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/render/software/SDL_rotate.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/render/software/SDL_triangle.c" />
+        <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/SDL_properties.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/SDL_assert.c" />
-        <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/SDL_dataqueue.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/SDL_error.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/SDL_hints.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/SDL_list.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/SDL_log.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/SDL_utils.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/SDL_guid.c" />
+        <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/SDL_hashtable.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/SDL.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/sensor/dummy/SDL_dummysensor.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/sensor/SDL_sensor.c" />
@@ -286,6 +293,7 @@
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/stdlib/SDL_string.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/stdlib/SDL_strtokr.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/thread/SDL_thread.c" />
+        <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/thread/generic/SDL_sysrwlock.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/timer/SDL_timer.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/video/dummy/SDL_nullevents.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/video/dummy/SDL_nullframebuffer.c" />
@@ -296,6 +304,7 @@
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/video/SDL_blit_auto.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/video/SDL_blit_copy.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/video/SDL_blit_N.c" />
+        <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/video/SDL_stb.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/video/SDL_blit_slow.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/video/SDL_blit.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/video/SDL_bmp.c" />
@@ -304,7 +313,6 @@
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/video/SDL_pixels.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/video/SDL_rect.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/video/SDL_RLEaccel.c" />
-        <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/video/SDL_shape.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/video/SDL_stretch.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/video/SDL_surface.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/video/SDL_video.c" />
@@ -424,14 +432,11 @@
         <section if="linux">
 
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/audio/alsa/SDL_alsa_audio.c" />
-            <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/audio/arts/SDL_artsaudio.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/audio/dsp/SDL_dspaudio.c" />
-            <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/audio/nas/SDL_nasaudio.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/audio/pulseaudio/SDL_pulseaudio.c" />
-            <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/audio/qsa/SDL_qsa_audio.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/audio/SDL_audiodev.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/audio/sndio/SDL_sndioaudio.c" />
-            <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/audio/sun/SDL_sunaudio.c" />
+            <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/core/SDL_core_unsupported.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/core/linux/SDL_dbus.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/core/linux/SDL_evdev_capabilities.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/core/linux/SDL_evdev_kbd.c" />
@@ -441,6 +446,7 @@
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/core/linux/SDL_threadprio.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/core/linux/SDL_udev.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/core/unix/SDL_poll.c" />
+            <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/tray/unix/SDL_tray.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/events/imKStoUCS.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/filesystem/unix/SDL_sysfilesystem.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/haptic/linux/SDL_syshaptic.c" />
@@ -562,7 +568,6 @@
 
             <compilerflag value="-fobjc-arc" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/audio/coreaudio/SDL_coreaudio.m" />
-            <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/file/cocoa/SDL_rwopsbundlesupport.m" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/filesystem/cocoa/SDL_sysfilesystem.m" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/haptic/darwin/SDL_syshaptic.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/hidapi/mac/hid.c" />
@@ -591,7 +596,6 @@
 
             <compilerflag value="-fobjc-arc" unless="OBJC_ARC" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/audio/coreaudio/SDL_coreaudio.m" />
-            <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/file/cocoa/SDL_rwopsbundlesupport.m" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/filesystem/cocoa/SDL_sysfilesystem.m" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/haptic/dummy/SDL_syshaptic.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/hidapi/ios/hid.m" />
@@ -661,7 +665,8 @@
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/video/emscripten/SDL_emscriptenopengles.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/video/emscripten/SDL_emscriptenvideo.c" />
         </section>
-
+            <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/gpu/SDL_gpu.c" />
+            <file name="${NATIVE_TOOLKIT_PATH}/sdl3/src/camera/SDL_camera.c" />
     </files>
 
 </xml>
