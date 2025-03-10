@@ -5694,6 +5694,8 @@ class NativeCFFI
 
 	@:cffi private static function lime_hb_buffer_add(buffer:CFFIPointer, codepoint:Int, cluster:Int):Void;
 
+	@:cffi private static function lime_hb_buffer_add_hxstring(buffer:CFFIPointer, text:String, itemOffset:Int, itemLength:Int):Void;
+
 	@:cffi private static function lime_hb_buffer_add_codepoints(buffer:CFFIPointer, text:DataPointer, textLength:Int, itemOffset:Int, itemLength:Int):Void;
 
 	@:cffi private static function lime_hb_buffer_add_utf8(buffer:CFFIPointer, text:String, itemOffset:Int, itemLength:Int):Void;
@@ -5910,6 +5912,8 @@ class NativeCFFI
 		false));
 	private static var lime_hb_buffer_add = new cpp.Callable<cpp.Object->Int->Int->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_hb_buffer_add", "oiiv",
 		false));
+	private static var lime_hb_buffer_add_hxstring = new cpp.Callable<cpp.Object->String->Int->Int->cpp.Void>(cpp.Prime._loadPrime("lime",
+		"lime_hb_buffer_add_hxstring", "osiiv", false));
 	private static var lime_hb_buffer_add_codepoints = new cpp.Callable<cpp.Object->lime.utils.DataPointer->Int->Int->Int->
 		cpp.Void>(cpp.Prime._loadPrime("lime", "lime_hb_buffer_add_codepoints", "odiiiv", false));
 	private static var lime_hb_buffer_add_utf8 = new cpp.Callable<cpp.Object->String->Int->Int->cpp.Void>(cpp.Prime._loadPrime("lime",
@@ -6090,6 +6094,7 @@ class NativeCFFI
 	private static var lime_hb_blob_is_immutable:Dynamic->Bool = CFFI.load("lime", "lime_hb_blob_is_immutable", 1);
 	private static var lime_hb_blob_make_immutable:Dynamic->Void = CFFI.load("lime", "lime_hb_blob_make_immutable", 1);
 	private static var lime_hb_buffer_add:Dynamic->Int->Int->Void = CFFI.load("lime", "lime_hb_buffer_add", 3);
+	private static var lime_hb_buffer_add_hxstring:Dynamic->String->Int->Int->Void = CFFI.load("lime", "lime_hb_buffer_add_hxstring", 4);
 	private static var lime_hb_buffer_add_codepoints:Dynamic->lime.utils.DataPointer->Int->Int->Int->Void = CFFI.load("lime", "lime_hb_buffer_add_codepoints",
 		5);
 	private static var lime_hb_buffer_add_utf8:Dynamic->String->Int->Int->Void = CFFI.load("lime", "lime_hb_buffer_add_utf8", 4);
@@ -6239,6 +6244,9 @@ class NativeCFFI
 	@:hlNative("lime", "hl_hb_blob_make_immutable") private static function lime_hb_blob_make_immutable(blob:CFFIPointer):Void {}
 
 	@:hlNative("lime", "hl_hb_buffer_add") private static function lime_hb_buffer_add(buffer:CFFIPointer, codepoint:Int, cluster:Int):Void {}
+
+	@:hlNative("lime", "hl_hb_buffer_add_hxstring") private static function lime_hb_buffer_add_hxstring(buffer:CFFIPointer, text:String, itemOffset:Int,
+		itemLength:Int):Void {}
 
 	@:hlNative("lime", "hl_hb_buffer_add_codepoints") private static function lime_hb_buffer_add_codepoints(buffer:CFFIPointer, text:DataPointer,
 		textLength:Int, itemOffset:Int, itemLength:Int):Void {}
