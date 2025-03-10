@@ -258,7 +258,13 @@ namespace lime {
 
 	void lime_hb_buffer_add_utf8 (value buffer, HxString text, int itemOffset, int itemLength) {
 
-		hb_buffer_add_utf8 ((hb_buffer_t*)val_data (buffer), text.c_str (), text.length, itemOffset, itemLength);
+		int textLength = text.length;
+		if (hxs_encoding (text) == hx::StringUtf16) {
+			// hxs_utf8 doesn't give us the length, so treat it as null terminated
+			textLength = -1;
+		}
+
+		hb_buffer_add_utf8 ((hb_buffer_t*)val_data (buffer), hxs_utf8 (text, nullptr), textLength, itemOffset, itemLength);
 
 	}
 
