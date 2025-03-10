@@ -271,7 +271,7 @@ namespace lime {
 
 	HL_PRIM void HL_NAME(hl_hb_buffer_add_utf8) (HL_CFFIPointer* buffer, hl_vstring* text, int itemOffset, int itemLength) {
 
-		hb_buffer_add_utf8 ((hb_buffer_t*)buffer->ptr, text ? hl_to_utf8 (text->bytes) : NULL, text ? text->length : 0, itemOffset, itemLength);
+		hb_buffer_add_utf8 ((hb_buffer_t*)buffer->ptr, text ? hl_to_utf8 (text->bytes) : NULL, -1, itemOffset, itemLength);
 
 	}
 
