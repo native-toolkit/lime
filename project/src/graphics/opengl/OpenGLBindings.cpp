@@ -26,6 +26,9 @@
 #include <SDL.h>
 #endif
 
+#ifdef LIME_SDL3
+#include <SDL3/SDL.h>
+#endif
 
 namespace lime {
 

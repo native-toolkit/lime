@@ -6,6 +6,10 @@
 	path = project/lib/sdl
 	url = https://github.com/libsdl-org/SDL
 	shallow = true
+[submodule "project/lib/sdl3"]
+	path = project/lib/sdl3
+	url = https://github.com/libsdl-org/SDL
+	shallow = true
 [submodule "project/lib/openal"]
 	path = project/lib/openal
 	url = https://github.com/kcat/openal-soft
