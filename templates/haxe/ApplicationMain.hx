@@ -7,6 +7,29 @@ import ::APP_MAIN::;
 
 @:dox(hide) class ApplicationMain
 {
+	private var _allowHighDPI = ::allowHighDPI::;
+	private var _alwaysOnTop = ::alwaysOnTop::;
+	private var _borderless = ::borderless::;
+	private var _frameRate = ::fps::;
+	private var _fullscreen = ::fullscreen::;
+	private var _height = ::height::;
+	private var _hidden = ::hidden::;
+	private var _maximized = ::maximized::;
+	private var _parameters = ::parameters::;
+	private var _resizable = ::resizable::;
+	private var _title = "::title::";
+	private var _width = ::width::;
+	private var _x = ::x::;
+	private var _y = ::y::;
+	
+	private var _antialiasing = ::antialiasing::;
+	private var _background = ::background::;
+	private var _colorDepth = ::colorDepth::;
+	private var _depth = ::depthBuffer::;
+	private var _hardware = ::hardware::;
+	private var _stencil = ::stencilBuffer::;
+	private var _vsync = ::vsync::;
+	
 	public static function main()
 	{
 		lime.system.System.__registerEntryPoint("::APP_FILE::", create);
@@ -35,35 +58,35 @@ import ::APP_MAIN::;
 		::foreach windows::
 		var attributes:lime.ui.WindowAttributes =
 			{
-				allowHighDPI: ::allowHighDPI::,
-				alwaysOnTop: ::alwaysOnTop::,
-				borderless: ::borderless::,
+				allowHighDPI: _allowHighDPI,
+				alwaysOnTop: _alwaysOnTop,
+				borderless: _borderless,
 				// display: ::display::,
 				element: null,
-				frameRate: ::fps::,
-				#if !web fullscreen: ::fullscreen::, #end
-				height: ::height::,
-				hidden: #if munit true #else ::hidden:: #end,
-				maximized: ::maximized::,
-				minimized: ::minimized::,
-				parameters: ::parameters::,
-				resizable: ::resizable::,
-				title: "::title::",
-				width: ::width::,
-				x: ::x::,
-				y: ::y::,
+				frameRate: _frameRate,
+				#if !web fullscreen: _fullscreen, #end
+				height: _height,
+				hidden: #if munit true #else _hidden #end,
+				maximized: _maximized,
+				minimized: _minimized,
+				parameters: _parameters,
+				resizable: _resizable,
+				title: _title,
+				width: _width,
+				x: _x,
+				y: _y,
 			};
 
 		attributes.context =
 			{
-				antialiasing: ::antialiasing::,
-				background: ::background::,
-				colorDepth: ::colorDepth::,
-				depth: ::depthBuffer::,
-				hardware: ::hardware::,
-				stencil: ::stencilBuffer::,
+				antialiasing: _antialiasing,
+				background: _background,
+				colorDepth: _colorDepth,
+				depth: _depth,
+				hardware: _hardware,
+				stencil: _stencil,
 				type: null,
-				vsync: ::vsync::
+				vsync: _vsync
 			};
 
 		if (app.window == null)
