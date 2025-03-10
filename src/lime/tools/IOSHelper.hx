@@ -367,6 +367,7 @@ class IOSHelper
 				// devices, so we'll prefer those, if available.
 				var deviceUUID:String = null;
 				// prefer an iOS device with State == 'connected'
+				// Note: Platform == 'iOS' includes iPadOS
 				var listDevicesOutput = System.runProcess("", "xcrun", ["devicectl", "list", "devices", "--hide-default-columns", "--columns", "Identifier", "--filter", "Platform == 'iOS' AND State == 'connected'"]);
 				var ready = false;
 				for (line in listDevicesOutput.split("\n")) {
