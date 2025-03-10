@@ -377,9 +377,18 @@ class IOSHelper
 					break;
 				}
 				if (deviceUUID == null || deviceUUID.length == 0) {
-					Log.error("No device connected");
+					// iOS 16 and older don't support xcrun devicectl
+					// so fall back to the ios-deploy executable
+					fallbackLaunch(project, applicationPath);
+					// Log.error("No device connected");
 					return;
 				}
+
+				if (Log.verbose)
+				{
+					Log.info("Detected iOS device UUID: " + deviceUUID);
+				}
+
 				System.runCommand("", "xcrun", ["devicectl", "device", "install", "app", "--device", deviceUUID, FileSystem.fullPath(applicationPath)]);
 				System.runCommand("", "xcrun", ["devicectl", "device", "process", "launch", "--console", "--device", deviceUUID, project.meta.packageName]);
 			} else {
@@ -398,6 +407,55 @@ class IOSHelper
 				]);
 			}
 		}
+	}
+
+	private static function fallbackLaunch(project:HXProject, applicationPath:String):Void
+	{
+		var templatePaths = [
+			Path.combine(Haxelib.getPath(new Haxelib(#if lime "lime" #else "hxp" #end)), #if lime "templates" #else "" #end)
+		].concat(project.templatePaths);
+
+		var launcher = System.findTemplate(templatePaths, "bin/ios-deploy");
+
+		Sys.command("chmod", ["+x", launcher]);
+
+		var deviceUUID:String = null;
+		var detectOutput = System.runProcess("", launcher, ["--detect"]);
+		for (line in detectOutput.split("\n"))
+		{
+			var startIndex = line.indexOf("Found ");
+			if (startIndex == -1)
+			{
+				continue;
+			}
+			var endIndex = line.indexOf(" ", startIndex + 6);
+			if (endIndex == -1)
+			{
+				continue;
+			}
+			deviceUUID = line.substring(startIndex + 6, endIndex);
+		}
+
+		if (deviceUUID == null || deviceUUID.length == 0)
+		{
+			Log.error("No device connected");
+			return;
+		}
+
+		if (Log.verbose)
+		{
+			Log.info("Detected iOS device UUID: " + deviceUUID);
+		}
+
+		System.runCommand("", launcher, [
+			"install",
+			"--id",
+			deviceUUID,
+			"--noninteractive",
+			"--debug",
+			"--bundle",
+			FileSystem.fullPath(applicationPath)
+		]);
 	}
 
 	public static function sign(project:HXProject, workingDirectory:String):Void
