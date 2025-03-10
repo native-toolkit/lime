@@ -365,8 +365,9 @@ class IOSHelper
 				// find DeveloperDiskImage.dmg. however, Xcode 16 adds new
 				// commands for installing and launching apps on connected
 				// devices, so we'll prefer those, if available.
-				var listDevicesOutput = System.runProcess("", "xcrun", ["devicectl", "list", "devices", "--hide-default-columns", "--columns", "Identifier", "--filter", "Platform == 'iOS' AND State == 'connected'"]);
 				var deviceUUID:String = null;
+				// prefer an iOS device with State == 'connected'
+				var listDevicesOutput = System.runProcess("", "xcrun", ["devicectl", "list", "devices", "--hide-default-columns", "--columns", "Identifier", "--filter", "Platform == 'iOS' AND State == 'connected'"]);
 				var ready = false;
 				for (line in listDevicesOutput.split("\n")) {
 					if (!ready) {
@@ -377,8 +378,23 @@ class IOSHelper
 					break;
 				}
 				if (deviceUUID == null || deviceUUID.length == 0) {
-					// iOS 16 and older don't support xcrun devicectl
-					// so fall back to the ios-deploy executable
+					// preferred fallback is an iOS device that is both
+					// available and wired
+					var listDevicesOutput = System.runProcess("", "xcrun", ["devicectl", "list", "devices", "--hide-default-columns", "--columns", "Identifier", "--filter", "Platform == 'iOS' AND State == 'available (paired)' AND connectionProperties.transportType == 'wired'"]);
+					ready = false;
+					for (line in listDevicesOutput.split("\n")) {
+						if (!ready) {
+							ready = StringTools.startsWith(line, "----");
+							continue;
+						}
+						deviceUUID = line;
+						break;
+					}
+				}
+				if (deviceUUID == null || deviceUUID.length == 0) {
+					// devices running iOS 16 and older don't support
+					// xcrun devicectl, so if no device was found, try falling
+					// back to ios-deploy
 					fallbackLaunch(project, applicationPath);
 					// Log.error("No device connected");
 					return;
@@ -392,19 +408,8 @@ class IOSHelper
 				System.runCommand("", "xcrun", ["devicectl", "device", "install", "app", "--device", deviceUUID, FileSystem.fullPath(applicationPath)]);
 				System.runCommand("", "xcrun", ["devicectl", "device", "process", "launch", "--console", "--device", deviceUUID, project.meta.packageName]);
 			} else {
-				var templatePaths = [
-					Path.combine(Haxelib.getPath(new Haxelib(#if lime "lime" #else "hxp" #end)), #if lime "templates" #else "" #end)
-				].concat(project.templatePaths);
-				var launcher = System.findTemplate(templatePaths, "bin/ios-deploy");
-				Sys.command("chmod", ["+x", launcher]);
-
-				System.runCommand("", launcher, [
-					"install",
-					"--noninteractive",
-					"--debug",
-					"--bundle",
-					FileSystem.fullPath(applicationPath)
-				]);
+				// continue using ios-deploy if Xcode version is 15 or older
+				fallbackLaunch(project, applicationPath);
 			}
 		}
 	}
@@ -414,43 +419,11 @@ class IOSHelper
 		var templatePaths = [
 			Path.combine(Haxelib.getPath(new Haxelib(#if lime "lime" #else "hxp" #end)), #if lime "templates" #else "" #end)
 		].concat(project.templatePaths);
-
 		var launcher = System.findTemplate(templatePaths, "bin/ios-deploy");
-
 		Sys.command("chmod", ["+x", launcher]);
-
-		var deviceUUID:String = null;
-		var detectOutput = System.runProcess("", launcher, ["--detect"]);
-		for (line in detectOutput.split("\n"))
-		{
-			var startIndex = line.indexOf("Found ");
-			if (startIndex == -1)
-			{
-				continue;
-			}
-			var endIndex = line.indexOf(" ", startIndex + 6);
-			if (endIndex == -1)
-			{
-				continue;
-			}
-			deviceUUID = line.substring(startIndex + 6, endIndex);
-		}
-
-		if (deviceUUID == null || deviceUUID.length == 0)
-		{
-			Log.error("No device connected");
-			return;
-		}
-
-		if (Log.verbose)
-		{
-			Log.info("Detected iOS device UUID: " + deviceUUID);
-		}
 
 		System.runCommand("", launcher, [
 			"install",
-			"--id",
-			deviceUUID,
 			"--noninteractive",
 			"--debug",
 			"--bundle",
